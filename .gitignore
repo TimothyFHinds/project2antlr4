@@ -1,2 +1,10 @@
 .antlr
 PascalParser$*
+Pascal.interp
+Pascal.tokens
+PascalBaseListener.*
+PascalBaseVisitor.*
+PascalLexer.*
+PascalListener.*
+PascalParser.*
+PascalVisitor.*

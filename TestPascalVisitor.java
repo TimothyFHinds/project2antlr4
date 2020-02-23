@@ -41,14 +41,15 @@ public class TestPascalVisitor {
     
     @Override public Value visitForDoStatement(PascalParser.ForDoStatementContext ctx) {
         //FOR id LET initialVal TO finalVal DO statement
+        String id = ctx.id().getText();
         Value initial = this.visit(ctx.initialVal);
         Value finalV = this.visit(ctx.finalVal);
         //Value value = this.visit(ctx.expression());
         for(double i=initial.asDouble(); i<finalV.asDouble();i++)
         {
+            memory.replace(id, new Value(i));
             //execute statement
             this.visit(ctx.statement());
-            
             //value = this.visit(ctx.expression());
         }
         return Value.VOID;
@@ -139,7 +140,7 @@ public class TestPascalVisitor {
 
     @Override public Value visitVisitWriteExpr(PascalParser.VisitWriteExprContext ctx) {
         //Value value = this.visit(ctx.expression());
-        Value temp = visit(ctx.expression());
+        Value temp = this.visit(ctx.expression());
          System.out.println(temp.asString());
          return new Value(temp.asString());
     }

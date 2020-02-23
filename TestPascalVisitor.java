@@ -43,13 +43,21 @@ public class TestPascalVisitor {
         //FOR id LET initialVal TO finalVal DO statement
         Value initial = this.visit(ctx.initialVal);
         Value finalV = this.visit(ctx.finalVal);
-        //Value value = this.visit(ctx.expression());
+
+        //Value value = this.visit(ctx.expression());       //doesnt work
+
+        String id = ctx.id().getText();
+        //this id should be a declared variable already?
+
+
         for(double i=initial.asDouble(); i<finalV.asDouble();i++)
         {
-            //execute statement
-            this.visit(ctx.statement());
+            //update the value of id
+
+            System.out.println(i);
+            this.visit(ctx.statement());    //exec statement
             
-            //value = this.visit(ctx.expression());
+            //value = this.visit(ctx.expression());     //doesnt work
         }
         return Value.VOID;
     }

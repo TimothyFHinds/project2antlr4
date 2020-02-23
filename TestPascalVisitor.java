@@ -45,7 +45,7 @@ public class TestPascalVisitor {
         Value initial = this.visit(ctx.initialVal);
         Value finalV = this.visit(ctx.finalVal);
         //Value value = this.visit(ctx.expression());
-        for(double i=initial.asDouble(); i<finalV.asDouble();i++)
+        for(double i=initial.asDouble(); i<=finalV.asDouble();i++)
         {
             memory.replace(id, new Value(i));
             //execute statement

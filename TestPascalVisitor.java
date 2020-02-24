@@ -24,6 +24,15 @@ public class TestPascalVisitor {
     // Symbol table
     private Map<String, Value> memory = new HashMap<String, Value>();
 
+    @Override public Value visitVisitBreak(PascalParser.VisitBreakContext ctx) {
+        //BREAK
+        //throw error only viewable by the program
+        //check inside visitWhile visitDo to see if a statement returns this error
+        //if it does then we break our loop
+
+        //we might want to consider changing our loops
+        return null;
+    }
     @Override public Value visitWhileDoStatement(PascalParser.WhileDoStatementContext ctx) {
         //WHILE expression DO statement
         Value value = this.visit(ctx.expression());
@@ -37,27 +46,38 @@ public class TestPascalVisitor {
         }
         return Value.VOID;
 
-    }
-    
-    @Override public Value visitForDoStatement(PascalParser.ForDoStatementContext ctx) {
+    }   
+    //for loops with DOWNTO
+    @Override public Value visitVisitForDownto(PascalParser.VisitForDowntoContext ctx) {
         //FOR id LET initialVal TO finalVal DO statement
+        String id = ctx.id().getText();
         Value initial = this.visit(ctx.initialVal);
         Value finalV = this.visit(ctx.finalVal);
-
-        //Value value = this.visit(ctx.expression());       //doesnt work
-
-        String id = ctx.id().getText();
-        //this id should be a declared variable already?
-
-
-        for(double i=initial.asDouble(); i<finalV.asDouble();i++)
+        //Value value = this.visit(ctx.expression());
+        //String typeOfLoop = ctx.
+        for(double i=initial.asDouble(); i>=finalV.asDouble();i--)
         {
-            //update the value of id
-
-            System.out.println(i);
-            this.visit(ctx.statement());    //exec statement
-            
-            //value = this.visit(ctx.expression());     //doesnt work
+            memory.replace(id, new Value(i));
+            //execute statement
+            this.visit(ctx.statement());
+            //value = this.visit(ctx.expression());
+        }
+        return Value.VOID;
+    }
+    //for loops with TO
+    @Override public Value visitVisitForTo(PascalParser.VisitForToContext ctx) {
+        //FOR id LET initialVal TO finalVal DO statement
+        String id = ctx.id().getText();
+        Value initial = this.visit(ctx.initialVal);
+        Value finalV = this.visit(ctx.finalVal);
+        //Value value = this.visit(ctx.expression());
+        //String typeOfLoop = ctx.
+        for(double i=initial.asDouble(); i<=finalV.asDouble();i++)
+        {
+            memory.replace(id, new Value(i));
+            //execute statement
+            this.visit(ctx.statement());
+            //value = this.visit(ctx.expression());
         }
         return Value.VOID;
     }

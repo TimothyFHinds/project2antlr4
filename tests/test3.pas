@@ -16,4 +16,12 @@ begin
         writeln(num2);
         writeln();
     end;
+
+    //for downto loop
+    for num2 := 20 downto 10 do
+    begin 
+        writeln('value of num2: ');
+        writeln(num2);
+        writeln();
+    end;
 end.

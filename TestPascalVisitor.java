@@ -35,6 +35,7 @@ public class TestPascalVisitor {
     private ArrayList<String> functions = new ArrayList<String>();
     private int scopeLevel = 0; //This will be used to keep track of scope level
     private int inProcedures = 0; // This will be used to see if we are in a procedures function
+    private int inFunctions = 0; //This will be used to see if we are in a function
     private int procCount = 0; //This will account for the variables in the procedure variables
     private int funcCount = 0; // This will acount for the variables in the function variables
     //private Boolean alreadyKey = false; // This will account for whether something is a key
@@ -43,6 +44,8 @@ public class TestPascalVisitor {
     @Override public Value visitWhileDoStatement(PascalParser.WhileDoStatementContext ctx) {
         //WHILE expression DO statement
         Value value = this.visit(ctx.expression());
+
+        scopeLevel++;
 
         while(value.asBoolean()) {
             //evaluate block
@@ -60,6 +63,7 @@ public class TestPascalVisitor {
         String id = ctx.id().getText();
         Value initial = this.visit(ctx.initialVal);
         Value finalV = this.visit(ctx.finalVal);
+        scopeLevel++;
         //Value value = this.visit(ctx.expression());
         for(double i=initial.asDouble(); i<=finalV.asDouble();i++)
         {
@@ -364,6 +368,7 @@ public class TestPascalVisitor {
                     else
                     {
                         //scopeLevelMap.put(newIDEN, scopeLevel);
+                        procCount++;
                         procedureVariables.add(newIDEN);
                         procedureVariableMap.put(newIDEN, new Value(0.0));
                     }
@@ -384,6 +389,7 @@ public class TestPascalVisitor {
                     else
                     {
                         //scopeLevelMap.put(newIDEN, scopeLevel);
+                        procCount++;
                         procedureVariables.add(newIDEN);
                         procedureVariableMap.put(newIDEN, new Value(true));
                     }
@@ -401,6 +407,7 @@ public class TestPascalVisitor {
                     else
                     {
                         //scopeLevelMap.put(newIDEN, scopeLevel);
+                        procCount++;
                         procedureVariables.add(newIDEN);
                         procedureVariableMap.put(newIDEN, new Value(""));
                     }
@@ -508,40 +515,47 @@ public class TestPascalVisitor {
     }
     @Override public Value visitIdExpression(PascalParser.IdExpressionContext ctx) {
         String id = ctx.getText();
-        Value value = memory.get(id);
-        //procedureVariableMap.forEach((key, val) -> System.out.println(key + " " + val));
-        for(int i = 0; i < procedureVariables.size(); i++)
+        Value value = null;
+        if(inProcedures == 1)
+        {
+            value = procedureVariableMap.get(id);
+
+            if(value == null && scopeLevelMap.get(id) == 0)
+            {
+                value = memory.get(id);
+            }
+            if(value == null)
+            {
+                throw new RuntimeException("no such variable: " + id);
+            }
+        }
+        else if(inFunctions == 1)
         {
 
         }
-        System.out.println("THE ID IS: " + id);
-        System.out.println("THE VALUE IS: " + value);
-        if(inProcedures == 1)
-        {
-            procedureVariableMap.replace(id, value);
-            value = procedureVariableMap.get(id);
-            //System.out.println("HI");
-        }
-        else if(inProcedures == 1 && procedureVariableMap.containsKey(id) == false && scopeLevelMap.get(id) == 0)
-        {
-            memory.replace(id, value);
-            value = memory.get(id);
-        }
-        else if(inProcedures == 0 && memory.containsKey(id))
-        {
-            memory.replace(id, value);
-            value = memory.get(id);
-        }
         else
         {
-            value = null;
-            throw new RuntimeException("no such variable: " + id);
+            if(scopeLevelMap.get(id) == 0)
+            {
+                value = memory.get(id);
+            }
+            else if(scopeLevelMap.get(id) == scopeLevel)
+            {
+                value = memory.get(id);
+            }
+
+            if(value == null)
+            {
+                throw new RuntimeException("no such variable: " + id);
+            }
+
         }
         return value;
     }
     @Override public Value visitIdConstant(PascalParser.IdConstantContext ctx) {
         String id = ctx.getText();
         Value value = memory.get(id);
+        System.out.println("HERE I AM -> id: " + id + " key: " + value);
         String scope = id + scopeLevel;
         if(scopeLevel != 0 && memory.containsKey(scope)) 
         {
@@ -565,7 +579,34 @@ public class TestPascalVisitor {
        //id = expression
        String id = ctx.id().getText();
        Value value = this.visit(ctx.expression());
-       return new Value(memory.put(id,value));
+       //System.out.println("The Id is -> " + id);
+       //System.out.println("Value is -> " + value);
+
+       if(inProcedures == 1)
+        {
+            if(procedureVariableMap.containsKey(id))
+            {
+                return new Value(procedureVariableMap.put(id, value));
+            }
+            else if(scopeLevelMap.get(id) == 0)
+            {
+                return new Value(memory.put(id, value));
+            }
+            if(value == null)
+            {
+                throw new RuntimeException("no such variable: " + id);
+            }
+
+            return value;
+        }
+        else if(inFunctions == 1)
+        {
+            return null;
+        }
+        else
+        {
+            return new Value(memory.put(id,value));
+        }
    }
 
    @Override public Value visitIfStatement(PascalParser.IfStatementContext ctx) {
@@ -592,11 +633,6 @@ public class TestPascalVisitor {
     }
 
     return null;
-   }
-
-   @Override public Value visitCompoundStatement(PascalParser.CompoundStatementContext ctx) {
-       scopeLevel++;
-       return this.visit(ctx.statements());
    }
     
     @Override public Value visitCaseStatement(PascalParser.CaseStatementContext ctx) {
@@ -653,19 +689,38 @@ public class TestPascalVisitor {
     {
         String name = ctx.id().getText();
         String params = ctx.parameterList().getText();
-        String[] elements = params.split(","); 
-        System.out.println("PARMAS: " + Arrays.toString(elements));
+        String[] elements = params.split(",");
+        int i = 0; //This is to keep track of global variables
+        int correctPosition = 0; //Keeps track of the correct position of procedure variables
         if(procedures.contains(name))
         {
-            System.out.println("It EXISTS!");
-            System.out.println("All Global Variables");
-            memory.forEach((key, value) -> System.out.println(key + " " + value));
-            System.out.println("All Procedure Variables");
-            procedureVariableMap.forEach((key, value) -> System.out.println(key + " " + value));
+            if(location > 0)
+            {
+                location--;
+            }
+            while(location > 0)
+            {
+                correctPosition += Integer.parseInt(procedures.get(location));
+            }
+            location = correctPosition;
             inProcedures = 1;
-            System.out.println("------- " + "inProcedures is " + inProcedures);
+            for(String names: procedureVariables)
+            {
+                procedureVariableMap.replace(procedureVariables.get(location), memory.get(elements[i]));
+                location++;
+                i++;
+            }
             PascalParser.BlockContext block = procMap.get(name);
             this.visit(block);
+            location = correctPosition;
+            i = 0;
+            for(String names: globalVariables)
+            {
+                memory.replace(globalVariables.get(i), procedureVariableMap.get(procedureVariables.get(location)));
+                location++;
+                i++;
+            }
+            inProcedures = 0;
         }
         else
         {
@@ -679,17 +734,23 @@ public class TestPascalVisitor {
         String procName = ctx.id().getText();
         //System.out.println(procName);
 
+
         if(procedures.contains(procName))
         {
-            System.out.println("Procedure already exits!");
+            System.out.println("Procedure name already exits!");
         }
         else
         {
+            scopeLevel++;
             procedures.add(procName);
             procMap.put(procName, ctx.block());
         }
 
         this.visit(ctx.formalParameterList());
+
+        procedures.add(Integer.toString(procCount));
+
+        procCount = 0;
 
         return null;
 

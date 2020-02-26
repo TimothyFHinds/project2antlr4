@@ -15,7 +15,7 @@ variableDecBlock:
 variableDeclaration:
     idList ':' type
     | id ':' type '=' input
-    ;
+    ; 
 input:
     BOOLINPUT   #boolInput
     | NUM   #numInput
@@ -39,7 +39,7 @@ procOrFuncDec:
     | functionDeclaration;
 
 procedureDeclaration:
-    PROCEDURE id (formalParameterList)? ';' block
+    PROCEDURE procName=id (procVariable=formalParameterList)? ';' block
     ;
 formalParameterList: 
     '(' formalParam (';' formalParam)* ')'
@@ -55,7 +55,7 @@ parameterGroup:
     ;
     
 functionDeclaration:
-    FUNCTION id (formalParameterList)? ':' type ';' block
+    FUNCTION functionName=id (functionVariables=formalParameterList)? ':' type ';' block
     ;
     //nice
 
@@ -69,12 +69,17 @@ statement:
     | structuredStatement ;
 simpleStatement: 
      assignStatement
+    | procedureCall
     | procedureStatement
     | emptyStatement;
-procedureStatement
-   : id ('(' parameterList ')')?    
-   | write
+procedureCall: 
+    name=id ('(' params=parameterList ')')?
+    ;  
+procedureStatement:   
+     write
    | read
+   | CONTINUE 
+   | BREAK
    ;
 write:
     WRITELN '(' expression ')'  #visitWriteExpr
@@ -245,8 +250,8 @@ CASE: C A S E ;
 WHILE: W H I L E ;
 DO: D O ;
 FOR: F O R ;
-//CONTINUE: C O N T I N U E ;
-//BREAK: B R E A K ;
+CONTINUE: C O N T I N U E ;
+BREAK: B R E A K ;
 TO: T O ;
 OF: O F ;
 RETURN: R E T U R N ;

@@ -51,6 +51,8 @@ public class TestPascalVisitor {
             //evaluate expression
             //value = this.visit(ctx.expression());
         }
+        //reset breakStatus
+        breakStatus = false;
         return Value.VOID;
 
     }   
@@ -60,15 +62,23 @@ public class TestPascalVisitor {
         String id = ctx.id().getText();
         Value initial = this.visit(ctx.initialVal);
         Value finalV = this.visit(ctx.finalVal);
+        Double initialVal = initial.asDouble();
+        Double finalVal = finalV.asDouble();
         //Value value = this.visit(ctx.expression());
         //String typeOfLoop = ctx.
         for(double i=initial.asDouble(); i>=finalV.asDouble();i--)
         {
+            if(breakStatus)
+            {
+                break;
+            }
             memory.replace(id, new Value(i));
             //execute statement
             this.visit(ctx.statement());
             //value = this.visit(ctx.expression());
         }
+        //reset breakStatus
+        breakStatus = false;
         return Value.VOID;
     }
     //for loops with TO
@@ -77,15 +87,22 @@ public class TestPascalVisitor {
         String id = ctx.id().getText();
         Value initial = this.visit(ctx.initialVal);
         Value finalV = this.visit(ctx.finalVal);
+        Double initialVal = initial.asDouble();
+        Double finalVal = finalV.asDouble();
         //Value value = this.visit(ctx.expression());
         //String typeOfLoop = ctx.
         for(double i=initial.asDouble(); i<=finalV.asDouble();i++)
         {
+            if(breakStatus)
+            {
+                break;
+            }
             memory.replace(id, new Value(i));
             //execute statement
             this.visit(ctx.statement());
             //value = this.visit(ctx.expression());
         }
+        breakStatus = false;
         return Value.VOID;
     }
     @Override public Value visitFunctionExpression(PascalParser.FunctionExpressionContext  ctx) {

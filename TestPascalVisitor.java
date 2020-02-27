@@ -24,6 +24,8 @@ public class TestPascalVisitor {
     // Symbol table
     private Map<String, Value> memory = new HashMap<String, Value>();
 
+    public Boolean breakStatus = false;
+
     @Override public Value visitVisitBreak(PascalParser.VisitBreakContext ctx) {
         //BREAK
         //throw error only viewable by the program
@@ -31,23 +33,15 @@ public class TestPascalVisitor {
         //if it does then we break our loop
         //we might want to consider changing our loops
         //return an interrupt
-        throw new RuntimeException("break");
+        breakStatus = true;
+        return null;
     }
     @Override public Value visitWhileDoStatement(PascalParser.WhileDoStatementContext ctx) {
         //WHILE expression DO statement
         Value value = this.visit(ctx.expression());
 
-        while(value.asBoolean()) {
+        while(value.asBoolean() && !breakStatus) {
             //evaluate block
-
-            try
-        { 
-            this.visit(ctx.statement());
-        } 
-        catch(RuntimeException e) 
-        { 
-            System.out.println(""); 
-        } 
             this.visit(ctx.statement());
             //we need to check the parse tree if continue or break is called
             //At runtime, a break statement causes execution to jump to the end
@@ -55,7 +49,7 @@ public class TestPascalVisitor {
             //Note that the break may be nested inside other blocks and if statements that also need to be exited.
 
             //evaluate expression
-            value = this.visit(ctx.expression());
+            //value = this.visit(ctx.expression());
         }
         return Value.VOID;
 

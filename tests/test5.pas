@@ -11,8 +11,7 @@ begin
 
     while num1>0 do
         begin
-            if(num1 = 5) then
-                //skip iteration 5
+            if(num1 = 5) then //skip iteration 5
                 begin
                     num1 := num1 - 1;
                     continue;

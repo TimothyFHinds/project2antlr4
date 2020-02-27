@@ -25,7 +25,14 @@ public class TestPascalVisitor {
     private Map<String, Value> memory = new HashMap<String, Value>();
 
     public Boolean breakStatus = false;
+    public Boolean continueStatus = false;
 
+    @Override public Value visitVisitContinue(PascalParser.VisitContinueContext ctx) {
+        //CONTINUE
+        //return new Value(String.valueOf(ctx.getText()));
+        continueStatus = true;
+        return null;
+    }
     @Override public Value visitVisitBreak(PascalParser.VisitBreakContext ctx) {
         //BREAK
         //throw error only viewable by the program
@@ -39,17 +46,21 @@ public class TestPascalVisitor {
     @Override public Value visitWhileDoStatement(PascalParser.WhileDoStatementContext ctx) {
         //WHILE expression DO statement
         Value value = this.visit(ctx.expression());
-
+        PascalParser.StatementsContext stmts2 = this.visit(ctx.statement()).visit(ctx.)
+        List<PascalParser.StatementsContext> stmts = this.visit(ctx.statement()).getChild(0).getChild(0).getChild(0);
+            for(PascalParser.StatementsContext stnum : stmts) {
+                
+        
         while(value.asBoolean() && !breakStatus) {
             //evaluate block
+            if(continueStatus)
+            {
+                continueStatus = false;
+                continue;
+            }    
             this.visit(ctx.statement());
-            //we need to check the parse tree if continue or break is called
-            //At runtime, a break statement causes execution to jump to the end
-            // of the nearest enclosing loop and proceeds from there. 
-            //Note that the break may be nested inside other blocks and if statements that also need to be exited.
-
-            //evaluate expression
-            //value = this.visit(ctx.expression());
+            //infinite loop
+            //need to find how to break this loop at proper time
         }
         //reset breakStatus
         breakStatus = false;
@@ -69,10 +80,14 @@ public class TestPascalVisitor {
         for(double i=initial.asDouble(); i>=finalV.asDouble();i--)
         {
             if(breakStatus)
+            break;
+            if(continueStatus)
             {
-                break;
-            }
+                continueStatus = false;
+                continue;
+            }    
             memory.replace(id, new Value(i));
+            
             //execute statement
             this.visit(ctx.statement());
             //value = this.visit(ctx.expression());
@@ -97,6 +112,11 @@ public class TestPascalVisitor {
             {
                 break;
             }
+            if(continueStatus)
+            {
+                continueStatus = false;
+                continue;
+            }    
             memory.replace(id, new Value(i));
             //execute statement
             this.visit(ctx.statement());

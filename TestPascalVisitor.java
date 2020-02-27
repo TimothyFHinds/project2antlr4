@@ -43,22 +43,30 @@ public class TestPascalVisitor {
         breakStatus = true;
         return null;
     }
+
     @Override public Value visitWhileDoStatement(PascalParser.WhileDoStatementContext ctx) {
         //WHILE expression DO statement
         Value value = this.visit(ctx.expression());
-        PascalParser.StatementsContext stmts2 = this.visit(ctx.statement()).visit(ctx.)
-        List<PascalParser.StatementsContext> stmts = this.visit(ctx.statement()).getChild(0).getChild(0).getChild(0);
-            for(PascalParser.StatementsContext stnum : stmts) {
-                
+        List<PascalParser.StatementContext> s1 = ctx.statement().structuredStatement().compoundStatement().statements().statement();
+        PascalParser.StatementsContext statements_in_loop = ctx.statement().structuredStatement().compoundStatement().statements();
+
+        //for(PascalParser.StatementsContext statementNUM : statements_in_loop) {
+            //will visit each statement until a break or continue is found
+            //Value evaluated = this.visit(statements_in_loop.statement());
+        //}
         
         while(value.asBoolean() && !breakStatus) {
-            //evaluate block
-            if(continueStatus)
-            {
-                continueStatus = false;
-                continue;
-            }    
-            this.visit(ctx.statement());
+            for(PascalParser.StatementContext s2 : s1) {
+                this.visit(s2);
+                /*if(continueStatus)
+                {
+                    continueStatus = false;
+                    continue;
+                } */
+            }
+            
+            //this.visit(ctx.statement());   
+            
             //infinite loop
             //need to find how to break this loop at proper time
         }

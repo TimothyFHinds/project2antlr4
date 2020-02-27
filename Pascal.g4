@@ -4,9 +4,10 @@ programHeading: PROGRAM id ';';
 id: 
     ID;
 block:
-     variableDecBlock* procAndFuncDecPart? compoundStatement
+     variableDecBlock* procAndFuncDecPart? mainBlock
      //(constantDefBlock | typeDefBlock | variableDecBlock)* compoundStatement
     ;
+mainBlock: BEGIN statements END;
 //constantDefBlock: ; //extra credit
 //typeDefBlock: ; //extra credit
 variableDecBlock:

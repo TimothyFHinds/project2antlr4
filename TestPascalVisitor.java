@@ -40,6 +40,10 @@ public class TestPascalVisitor {
     private int funcCount = 0; // This will acount for the variables in the function variables
     //private Boolean alreadyKey = false; // This will account for whether something is a key
 
+    @Override public Value visitMainBlock(PascalParser.MainBlockContext ctx) {
+        scopeLevel++;
+        return this.visit(ctx.statements());
+    }
 
     @Override public Value visitWhileDoStatement(PascalParser.WhileDoStatementContext ctx) {
         //WHILE expression DO statement
@@ -371,7 +375,7 @@ public class TestPascalVisitor {
         //if x=3 then there is an idList declaration of variables
         if(x==3)
         {
-            //idList : type   cases
+            //idList : type cases
             //get the type as a string
             String type = ctx.type().getText();
             //check if type is REAL or BOOLEAN
@@ -590,6 +594,12 @@ public class TestPascalVisitor {
         }
         else
         {
+            //System.out.println("The scope level is currently: " + scopeLevel);
+            if(scopeLevelMap.get(id) == null)
+            {
+                scopeLevelMap.put(id, scopeLevel);
+            }
+
             if(scopeLevelMap.get(id) == 0)
             {
                 value = memory.get(id);
@@ -778,13 +788,24 @@ public class TestPascalVisitor {
                 location++;
                 index++;
             }
+            // System.out.println("The Procedure Variable Map - Before");
+            // procedureVariableMap.forEach((key, value) -> System.out.println(key + " " + value));
             PascalParser.BlockContext block = procMap.get(name);
             this.visit(block);
+            // System.out.println("The Procedure Variable Map - After");
+            // procedureVariableMap.forEach((key, value) -> System.out.println(key + " " + value));
+            // System.out.println("The arraylist (after) is: ");
+            // for(String names: procedureVariables)
+            // {
+            //     System.out.println(names);
+            // }
             location = correctPosition;
+            //System.out.println("The value of location is: " + location);
+
             index = 0;
-            for(String names: globalVariables)
+            for(String names: elements)
             {
-                memory.replace(globalVariables.get(index), procedureVariableMap.get(procedureVariables.get(location)));
+                memory.replace(elements[index], procedureVariableMap.get(procedureVariables.get(location)));
                 location++;
                 index++;
             }

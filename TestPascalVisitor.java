@@ -29,9 +29,9 @@ public class TestPascalVisitor {
         //throw error only viewable by the program
         //check inside visitWhile visitDo to see if a statement returns this error
         //if it does then we break our loop
-
         //we might want to consider changing our loops
-        return null;
+        //return an interrupt
+        throw new RuntimeException("break");
     }
     @Override public Value visitWhileDoStatement(PascalParser.WhileDoStatementContext ctx) {
         //WHILE expression DO statement
@@ -39,7 +39,20 @@ public class TestPascalVisitor {
 
         while(value.asBoolean()) {
             //evaluate block
+
+            try
+        { 
             this.visit(ctx.statement());
+        } 
+        catch(RuntimeException e) 
+        { 
+            System.out.println(""); 
+        } 
+            this.visit(ctx.statement());
+            //we need to check the parse tree if continue or break is called
+            //At runtime, a break statement causes execution to jump to the end
+            // of the nearest enclosing loop and proceeds from there. 
+            //Note that the break may be nested inside other blocks and if statements that also need to be exited.
 
             //evaluate expression
             value = this.visit(ctx.expression());
@@ -417,6 +430,7 @@ public class TestPascalVisitor {
         // evaluate the else-stat_block (if present == not null)
         return this.visit(ctx.statement());
     }
+
 
     return null;
    }

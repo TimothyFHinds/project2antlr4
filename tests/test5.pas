@@ -12,14 +12,14 @@ begin
     while num1>0 do
         begin
             if(num1 = 5) then
-                //skip iteration
+                //skip iteration 5
                 begin
                     num1 := num1 - 1;
                     continue;
                 end;
             writeln('The value of num1: ');
             writeln(num1);
-            writeln();  //write new line
+            writeln();  
             num1 := num1 - 1;
         end;
 

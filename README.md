@@ -11,7 +11,7 @@
                                 test3.pas       <- for do loops (TO/DOWNTO)
                                 test4.pas       <- break statements,
                                                     multiple loops in one program
-                                test5.pas       <- continue statement
+                                test5.pas       <- while continue statement
                                 test6.pas       <- procedures
                                 test7.pas       <- functions
 # Test File Script:

@@ -22,4 +22,15 @@ begin
             num1 := num1 - 1;
         end;
 
+    for num2 := 10 to 20 do 
+    begin 
+        if(num2 = 15) then
+            continue;
+        writeln('value of num2: ');
+        writeln(num2);
+    end;
+
+    writeln();
+
+
 end.

@@ -180,36 +180,3 @@ In our procedure, we then change our global variable A to a different value, 10.
 After the procedure, we print out our A in the main block and it returns the new value 10.0.
 
 
-# Specific requirements:
-# Part of the language to implement:
-# For this project, you probably need to re-implement the previous part of the language and to add:
-    while-do and for-do loops
-    break and continue keywords
-    user-defined procedures and functions
-    Implementing scoping
-    Please implement static scoping for the language. 
-## Specifically for static scoping:
-
-        Each time a new block opens (while, for statements) a new scope is created.
-        Functions (procedures) create scopes as well. Only global variables are visible in the functions (together with their local scopes).
-        Chain the scopes as they are created and keep track what is visible where
-        Test cases
-        Write test cases to cover the entire language. You can/should reuse the test cases from Project 1 for the common part. 
-
-
-# What to turn in
-Turn in all the files needed to run your project. This includes the grammar file, Java sources needed and test cases (.pas extension) and a README file indicating how to run your code. You will not be able to rely on grun to run your code since you need a main program to evaluate your AST or parse tree. 
-
-# Bonuses (10% each)
-Implement a simple version of constant propagation. That is if the code contains calculations using constants that can be performed at compile time, perform such computations as you parse the code. For example, the AST for " v = 2*(10+11)" will become "v=42" and "v=v+2*3" becomes "v=v+6". To prove that this is the case, print your AST. Notice that this is not possible (or at least very hard) to do if you use the Antlr parse trees (requires parse tree rewrite which is hard and undocumented). We will implement the more complex version of constant propagation in a subsequent project.
-Implement formal parameter passing in procedures/functions. Procedures should be able to declare formal parameters that can be passed when they are called. These variables should be correctly scoped as well.
-
-# Bonuses Attempted
-
-The formal parameter passing in procedures/functions should be implemented correctly.
-These can be seen in tests/test6.pas and tests/test7.pas.
-These items should be scoped correctly as they all should have a scope level of 1, which is 1 value higher than the global variables.
-
-
-
-

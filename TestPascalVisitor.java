@@ -103,7 +103,10 @@ public class TestPascalVisitor {
         {   
             //first update the value of the iterating variable
             //the iterating variable cannot be manipulated inside the for loop
+            
             memory.replace(id, new Value(i));
+            if(breakStatus)
+                break;
             //System.out.println(memory.get(id));
 
             Boolean check4Continue = false;

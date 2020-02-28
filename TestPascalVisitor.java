@@ -1019,7 +1019,6 @@ public class TestPascalVisitor {
             scopeLevel++;
             scopeNameMap.put(procName, scopeTracker);
             scopeTracker++;
-
             procedures.add(procName);
             procMap.put(procName, ctx.block());
 
@@ -1130,7 +1129,8 @@ public class TestPascalVisitor {
            {
                 functionVariableMap.put(funcName, new Value(true));
            }
-    
+
+           scopeLevelMap.put(funcName, scopeLevel);
            functions.add(Integer.toString(funcCount));
     
            funcCount = 0;

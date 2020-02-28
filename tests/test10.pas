@@ -1,8 +1,8 @@
 program test10;
 var
    a, b, c: integer;
-procedure display;
 
+procedure display();
 var
    a, b, c: integer;
 begin

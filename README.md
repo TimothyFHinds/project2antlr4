@@ -16,10 +16,15 @@ OR
 *note: running the batch test method will NOT test readln() functionality*
 
 *to test readln() functionality run either*
+
 java TestPascalVisitor tests/test22.pas
+
 OR
+
 java TestPascalVisitor tests/test66.pas
+
 OR
+
 java TestPascalVisitor tests/test88.pas
 
 # How to compile/run individual files:
@@ -28,19 +33,19 @@ java TestPascalVisitor tests/test88.pas
 3. antlr4 -visitor Pascal.g4
 4. javac *.java
 5. java TestPascalVisitor tests/test1.pas       <- for P1 implementations
-                                test2.pas       <- while do loops
-                                test22.pas      <- while do loop with readln()
-                                test3.pas       <- for do loops (TO/DOWNTO)
-                                test4.pas       <- break statements,
-                                test5.pas       <- continue statements
-                                test6.pas       <- procedures
-                                test66.pas      <- procedures with readln()
-                                test7.pas       <- functions
-                                test8.pas       <- procedures with readln() 
-                                test81.pas      <- procedure true case
-                                test82.pas      <- procedure false case
-                                test9.pas       <- scoping
-                                test10.pas      <- static scoping 
+6. java TestPascalVisitor tests/test2.pas       <- while do loops
+7. java TestPascalVisitor tests/test22.pas      <- while do loop with readln()
+8. java TestPascalVisitor tests/test3.pas       <- for do loops (TO/DOWNTO)
+9. java TestPascalVisitor tests/test4.pas       <- break statements,
+10. java TestPascalVisitor tests/test5.pas       <- continue statements
+11. java TestPascalVisitor tests/test6.pas       <- procedures
+12. java TestPascalVisitor tests/test66.pas      <- procedures with readln()
+13. java TestPascalVisitor tests/test7.pas       <- functions
+14. java TestPascalVisitor tests/test8.pas       <- procedures with readln() 
+15. java TestPascalVisitor tests/test81.pas      <- procedure true case
+16. java TestPascalVisitor tests/test82.pas      <- procedure false case
+17. java TestPascalVisitor tests/test9.pas       <- scoping
+18. java TestPascalVisitor tests/test10.pas     <- static scoping
 
 # TO SEE PARSE TREE
 grun Pascal program -gui tests/testX.pas

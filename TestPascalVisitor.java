@@ -73,6 +73,7 @@ public class TestPascalVisitor {
         //String typeOfLoop = ctx.
         for(double i=initial.asDouble(); i>=finalV.asDouble();i--)
         {
+            memory.replace(id, new Value(i));
             if(breakStatus)
             break;
             if(continueStatus)
@@ -80,10 +81,11 @@ public class TestPascalVisitor {
                 continueStatus = false;
                 continue;
             }    
-            memory.replace(id, new Value(i));
             
             //execute statement
             this.visit(ctx.statement());
+            memory.replace(id, new Value(i));
+
             //value = this.visit(ctx.expression());
         }
         //reset breakStatus
@@ -100,21 +102,19 @@ public class TestPascalVisitor {
         Double finalVal = finalV.asDouble();
         //Value value = this.visit(ctx.expression());
         //String typeOfLoop = ctx.
-        for(double i=initial.asDouble(); i<=finalV.asDouble();i++)
-        {
-            if(breakStatus)
-            {
-                break;
-            }
-            if(continueStatus)
-            {
-                continueStatus = false;
-                continue;
-            }    
-            memory.replace(id, new Value(i));
-            //execute statement
+
+        memory.replace(id, new Value(initialVal));
+        for(double i=initial.asDouble()+1; i<=finalV.asDouble()+1;i++)
+        //while(!breakStatus && initialVal<=finalVal)
+        {          
             this.visit(ctx.statement());
-            //value = this.visit(ctx.expression());
+            //execute statement
+            if(continueStatus) 
+            {
+                continueStatus = false; //reset continueStatus
+                 continue;  
+            }
+            memory.replace(id, new Value(i));  
         }
         breakStatus = false;
         return Value.VOID;
@@ -192,6 +192,7 @@ public class TestPascalVisitor {
             //then we can get the symbol
             Value s1 = new Value(memory.get(id));
             System.out.println(s1.asString());
+            return new Value(s1.asString());
         }
         return null;
 
@@ -200,7 +201,8 @@ public class TestPascalVisitor {
     @Override public Value visitVisitWriteEmpty(PascalParser.VisitWriteEmptyContext ctx) {
         //in this scenario of writeln there is nothing inside the parentheses
         System.out.println();
-        return null;
+        String newline = "\n";
+        return new Value(newline);
     }
 
     @Override public Value visitVisitWriteExpr(PascalParser.VisitWriteExprContext ctx) {

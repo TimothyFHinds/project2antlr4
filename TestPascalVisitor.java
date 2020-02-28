@@ -24,41 +24,164 @@ public class TestPascalVisitor {
     // Symbol table
     private Map<String, Value> memory = new HashMap<String, Value>();
 
+    public Boolean breakStatus = false;
+    public Boolean continueStatus = false;
+
+    @Override public Value visitVisitContinue(PascalParser.VisitContinueContext ctx) {
+        //CONTINUE
+        //return new Value(String.valueOf(ctx.getText()));
+        continueStatus = true;
+        return null;
+    }
+    @Override public Value visitVisitBreak(PascalParser.VisitBreakContext ctx) {
+        //BREAK
+        //throw error only viewable by the program
+        //check inside visitWhile visitDo to see if a statement returns this error
+        //if it does then we break our loop
+        //we might want to consider changing our loops
+        //return an interrupt
+        breakStatus = true;
+        return null;
+    }
+
     @Override public Value visitWhileDoStatement(PascalParser.WhileDoStatementContext ctx) {
         //WHILE expression DO statement
         Value value = this.visit(ctx.expression());
-
-        while(value.asBoolean()) {
-            //evaluate block
-            this.visit(ctx.statement());
-
-            //evaluate expression
+        //List<PascalParser.StatementContext> s1 = ctx.statement().structuredStatement().compoundStatement().statements().statement();
+        //PascalParser.StatementsContext statements_in_loop = ctx.statement().structuredStatement().compoundStatement().statements();
+        
+        while(value.asBoolean() && !breakStatus) {
+            
+            //go through the whiledo parse tree
+            Boolean check4Continue = false;
+            PascalParser.StatementsContext ccc = ctx.statement().structuredStatement().compoundStatement().statements();
+            int x = ctx.statement().structuredStatement().compoundStatement().statements().statement().size();
+            int iter = 0;
+            //find out how many statements there are
+            while(iter<x)
+            {
+                this.visit(ccc.statement(iter));
+                iter++;
+                if(continueStatus)
+                {
+                    continueStatus = false;
+                    check4Continue = true;
+                    //if we found a continue then lets break out of this while loop
+                    break;
+                }
+            }
+            if(check4Continue)
+            {
+                check4Continue = false;
+                value = this.visit(ctx.expression());
+                continue;
+            }
+            //evaluate the block
+            //this.visit(ctx.statement());   
+            
             value = this.visit(ctx.expression());
         }
+        //reset breakStatus
+        breakStatus = false;
         return Value.VOID;
 
-    }
-    
-    @Override public Value visitForDoStatement(PascalParser.ForDoStatementContext ctx) {
+    }   
+    //for loops with DOWNTO
+    @Override public Value visitVisitForDownto(PascalParser.VisitForDowntoContext ctx) {
         //FOR id LET initialVal TO finalVal DO statement
+        String id = ctx.id().getText();
         Value initial = this.visit(ctx.initialVal);
         Value finalV = this.visit(ctx.finalVal);
-
-        //Value value = this.visit(ctx.expression());       //doesnt work
-
-        String id = ctx.id().getText();
-        //this id should be a declared variable already?
-
-
-        for(double i=initial.asDouble(); i<finalV.asDouble();i++)
-        {
-            //update the value of id
-
-            System.out.println(i);
-            this.visit(ctx.statement());    //exec statement
+        
+        for(double i=initial.asDouble(); i>=finalV.asDouble();i--)
+        {   
+            //first update the value of the iterating variable
+            //the iterating variable cannot be manipulated inside the for loop
             
-            //value = this.visit(ctx.expression());     //doesnt work
+            memory.replace(id, new Value(i));
+            if(breakStatus)
+                break;
+            //System.out.println(memory.get(id));
+
+            Boolean check4Continue = false;
+            //visit statements one at a time within the compound statement block
+
+            //List<PascalParser.StatementContext> csb = ctx.statement().structuredStatement().compoundStatement().statements().statement().size();
+            PascalParser.StatementsContext ccc = ctx.statement().structuredStatement().compoundStatement().statements();
+            int x = ctx.statement().structuredStatement().compoundStatement().statements().statement().size();
+            int iter = 0;
+            //find out how many statements there are
+            while(iter<x)
+            {
+                this.visit(ccc.statement(iter));
+                if(continueStatus)
+                {
+                    continueStatus = false;
+                    check4Continue = true;
+                    //if we found a continue then lets break out of this while loop
+                    break;
+                }
+                iter++;
+            }
+            
+            if(check4Continue)
+            {
+                check4Continue = false;
+                continue;
+            }
+            //this.visit(ctx.statement());
+            
         }
+        breakStatus = false;
+        return Value.VOID;
+    }
+    //for loops with TO
+    @Override public Value visitVisitForTo(PascalParser.VisitForToContext ctx) {
+        //FOR id LET initialVal TO finalVal DO statement
+        String id = ctx.id().getText();
+        Value initial = this.visit(ctx.initialVal);
+        Value finalV = this.visit(ctx.finalVal);
+        
+        for(double i=initial.asDouble(); i<=finalV.asDouble();i++)
+        {   
+            //first update the value of the iterating variable
+            //the iterating variable cannot be manipulated inside the for loop
+            
+            memory.replace(id, new Value(i));
+            if(breakStatus)
+                break;
+            //System.out.println(memory.get(id));
+
+            Boolean check4Continue = false;
+            //visit statements one at a time within the compound statement block
+
+            //List<PascalParser.StatementContext> csb = ctx.statement().structuredStatement().compoundStatement().statements().statement().size();
+            PascalParser.StatementsContext ccc = ctx.statement().structuredStatement().compoundStatement().statements();
+            int x = ctx.statement().structuredStatement().compoundStatement().statements().statement().size();
+            int iter = 0;
+            //find out how many statements there are
+            while(iter<x)
+            {
+                this.visit(ccc.statement(iter));
+                if(continueStatus)
+                {
+                    continueStatus = false;
+                    check4Continue = true;
+                    //if we found a continue then lets break out of this while loop
+                    break;
+                }
+                iter++;
+            }
+
+            if(check4Continue)
+            {
+                check4Continue = false;
+                continue;
+            }
+            //this.visit(ctx.statement());
+            
+        }
+        breakStatus = false;
         return Value.VOID;
     }
     @Override public Value visitFunctionExpression(PascalParser.FunctionExpressionContext  ctx) {
@@ -134,6 +257,7 @@ public class TestPascalVisitor {
             //then we can get the symbol
             Value s1 = new Value(memory.get(id));
             System.out.println(s1.asString());
+            return new Value(s1.asString());
         }
         return null;
 
@@ -142,7 +266,8 @@ public class TestPascalVisitor {
     @Override public Value visitVisitWriteEmpty(PascalParser.VisitWriteEmptyContext ctx) {
         //in this scenario of writeln there is nothing inside the parentheses
         System.out.println();
-        return null;
+        String newline = "\n";
+        return new Value(newline);
     }
 
     @Override public Value visitVisitWriteExpr(PascalParser.VisitWriteExprContext ctx) {
@@ -376,27 +501,29 @@ public class TestPascalVisitor {
    }
 
    @Override public Value visitIfStatement(PascalParser.IfStatementContext ctx) {
-  //System.out.println(memory.values());    //returns symbol table, for debugging
 
     PascalParser.ConditionBlockContext conditions = ctx.conditionBlock();
     //conditions: expression THEN statement
     //conditions.expression() conditions.statement()
 
-    //visitConditionBlock(PascalParser.ConditionBlockContext
     boolean evaluatedBlock = false;
 
     Value evaluated = this.visit(conditions.expression());
     if(evaluated.asBoolean())
     {
         evaluatedBlock = true;
-        return this.visit(conditions.statement());
+        PascalParser.StatementContext then_statement = conditions.statement();
+        
+        return this.visit(then_statement);
+        
     }
 
     if(!evaluatedBlock && ctx.statement() != null) 
     {
-        // evaluate the else-stat_block (if present == not null)
+        // evaluate the else-stat_block (if present, the else-stat_block == not null)
         return this.visit(ctx.statement());
     }
+
 
     return null;
    }

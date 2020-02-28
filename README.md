@@ -1,34 +1,50 @@
 # Project 2
 # Carl Lin && Timothy Hinds
 
+# How to batch run the tests (windows only):
+To run all test files and check for desired outputs
+From a windows machine
+1. unzip
+2. cd project2antlr4  
+3. antlr4 -visitor Pascal.g4
+4. javac *.java
+5. cmd
+6. tests.bat
+OR
+5. double click `tests.bat` within project2antlr4 directory
+
+*note: running the batch test method will NOT test readln() functionality*
+
+*to test readln() functionality run either*
+java TestPascalVisitor tests/test22.pas
+OR
+java TestPascalVisitor tests/test66.pas
+OR
+java TestPascalVisitor tests/test88.pas
+
 # How to compile/run individual files:
 1. unzip 
-2. cd pascal
+2. cd project2antlr4
 3. antlr4 -visitor Pascal.g4
 4. javac *.java
 5. java TestPascalVisitor tests/test1.pas       <- for P1 implementations
-6. java TestPascalVisitor tests/test2.pas       <- while do loops
+                                test2.pas       <- while do loops
+                                test22.pas      <- while do loop with readln()
                                 test3.pas       <- for do loops (TO/DOWNTO)
                                 test4.pas       <- break statements,
-                                                    multiple loops in one program
-                                test5.pas       <- while continue statement
+                                test5.pas       <- continue statements
                                 test6.pas       <- procedures
+                                test66.pas      <- procedures with readln()
                                 test7.pas       <- functions
-# Test File Script:
-To run all test files and check for desired outputs
-    From a windows machine
-    cmd tests.bat
-    tests.bat
-
-    or double click it      <-- works best
-
+                                test81.pas      <- procedure true case
+                                test82.pas      <- procedure false case
+                                test88.pas      <- procedure with readln()
+                                test9.pas       <- scoping
+                                test10.pas      <- static scoping 
 
 # TO SEE PARSE TREE
 grun Pascal program -gui tests/testX.pas
     cmd will show errors with parse tree if any
-
-
-
 
 # Assumptions:
     strings print with quotes around them ''    
@@ -39,7 +55,6 @@ grun Pascal program -gui tests/testX.pas
 
     We cannot create variables with the same name. If it is already create, we cannot make a new one of the same name.
 
-# QUESTIONS!
 
 # Functionalities:    
     TestPascalVisitor.java contains all of OUR WRITTEN visitor methods
@@ -49,37 +64,24 @@ grun Pascal program -gui tests/testX.pas
         testfile: tests/test1.pas
 
     --while-do 
-        testfile: tests/test2.pas      
+        testfile: tests/test2.pas
+                  tests/test22.pas      
 
     --for-do loops
         testfile: tests/test3.pas      
 
     --break keyword
         testfile: tests/test4.pas      
-        consider changing ifVisitor and caseVisitor
-            base cases might not want to return null
-        
-        figure out return type to identify null statements
-
-        try {} catch {} ?
-        https://www.geeksforgeeks.org/throw-throws-java/
-
-        throw an exception within break
-        catch it within the loop methods
     
     --continue keyword  
         testfile: tests/test5.pas      
         
-
     --user defined procedures
         testfile: tests/test6.pas
+                  tests/test66.pas
         
-
     --user defined functions
         testfile: tests/test7.pas      
-        
-
-
 
     --Implement static scoping
         testfile: tests/test9.pas
@@ -90,8 +92,6 @@ grun Pascal program -gui tests/testX.pas
         Scope levels increased whenever a procedure/function/for-do statement/while loop were created.
 
 
-
-
 # Test Cases and What They Cover
 
 ## tests/test1.pas
@@ -100,27 +100,31 @@ Test case #1 basically covered all of the basic math functions that were utilize
 
 ## tests/test2.pas
 
-Test case #2 implements a static while loop decrementing from 20 to 1.
+Test case #2 covers the while-do loop that we had to implement.
+This statement essentially takes a number, prints it, then decrements it. 
+Loops until it is equal to 0.
 
-Test case #22 covers the while-do loop that we had to implement.
-This statement essentially asks for a number to count from and decrements it until it is equal to 0.
-    **Incorporates readln()
+## tests/test22.pas
+
+Test case #22 is test case #2 with readln() functionality to tests the limitationss of while loops.
 
 ## tests/test3.pas
 
 Test case #3 covers the for-do loops and will basically print out all values in the for loop from 10 to 20.
+It has a second for loop as well, which is utilizing the DOWNTO functionality. It loops from 20 down to 10.
 
 ## tests/test4.pas
 
-Test case #4 covers our break statement.
+Test case #4 covers our break statement cases.
+It breaks out of a while loops and for loops.
 
 ## tests/test5.pas
 
-Test case #5 covers our continue statement.
+Test case #5 covers our continue statement cases.
+It will parse through the tree until it hits continue statements.
+Works for while loops and for loops.
 
 ## tests/test6.pas
-
-moved the version with readln() to test66.pas
 
 Test case #6 involves the testing of user defined procedures.
 In this file, we read in three different numbers. These numbers should be type and then set with the return key.
@@ -128,6 +132,10 @@ Afterwards, we take the three different numbers that we get and an empty variabl
 In the procedure, we test our three different numbers and set min equal to that number, which is represented by m in the procedure.
 After the procedure is done executing, we set the value in m equivalent to the value in min.
 In the end, we print out the smallest number represented by min.
+
+## tests/test66.pas
+
+Test case #6 but with readln() functionality for testing its limitations.
 
 ## tests/test7.pas
 
@@ -149,6 +157,13 @@ The global variable, b, is set equal to g and then b is printed out to the scree
 - The functionality of this for loop is to just print the "|" symbol.
 - This changed a variable assigned in the procedure and interated from 5 to 10.
 
+## tests/test81.pas
+
+test #8 but a true case.
+
+## tests/test82.pas
+
+test #8 but a false case.
 
 ## tests/test9.pas
 

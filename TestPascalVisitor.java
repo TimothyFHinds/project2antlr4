@@ -98,23 +98,63 @@ public class TestPascalVisitor {
         String id = ctx.id().getText();
         Value initial = this.visit(ctx.initialVal);
         Value finalV = this.visit(ctx.finalVal);
-        Double initialVal = initial.asDouble();
-        Double finalVal = finalV.asDouble();
-        //Value value = this.visit(ctx.expression());
-        //String typeOfLoop = ctx.
+        //Double initialVal = initial.asDouble();
+        //Double finalVal = finalV.asDouble();
 
-        memory.replace(id, new Value(initialVal));
-        for(double i=initial.asDouble()+1; i<=finalV.asDouble()+1;i++)
-        //while(!breakStatus && initialVal<=finalVal)
-        {          
-            this.visit(ctx.statement());
+
+        //memory.replace(id, new Value(initialVal));
+        //System.out.println(initial.asDouble());
+        for(double i=initial.asDouble(); i<=finalV.asDouble();i++)
+        {   
+            //first update the value of the iterating variable
+            //the iterating variable cannot be manipulated inside the for loop
+            memory.replace(id, new Value(i));
+            //System.out.println(memory.get(id));
+
+            Boolean check4Continue = false;
+
+            //visit statements
+            //if(ctx.statement().structuredStatement().compoundStatement() != null)
+            
+                //then there is a compound statement inside the for loop which is good
+                
+                //visit statements one at a time within the compound statement block
+
+                //List<PascalParser.StatementContext> csb = ctx.statement().structuredStatement().compoundStatement().statements().statement().size();
+                PascalParser.StatementsContext ccc = ctx.statement().structuredStatement().compoundStatement().statements();
+                int x = ctx.statement().structuredStatement().compoundStatement().statements().statement().size();
+                int iter = 0;
+                //find out how many statements there are
+                while(iter<x)
+                {
+                    this.visit(ccc.statement(iter));
+                    if(continueStatus)
+                    {
+                        continueStatus = false;
+                        check4Continue = true;
+                        //if we found a continue then lets break out of this while loop
+                        break;
+                    }
+                    iter++;
+                }
+                if(check4Continue)
+                {
+                    check4Continue = false;
+                    continue;
+                }
+
+            
+            
+            //this.visit(ctx.statement());
+
+            
             //execute statement
-            if(continueStatus) 
+            /*if(continueStatus) 
             {
                 continueStatus = false; //reset continueStatus
+                memory.replace(id, new Value(i));  
                  continue;  
-            }
-            memory.replace(id, new Value(i));  
+            }*/
         }
         breakStatus = false;
         return Value.VOID;
@@ -436,25 +476,26 @@ public class TestPascalVisitor {
    }
 
    @Override public Value visitIfStatement(PascalParser.IfStatementContext ctx) {
-  //System.out.println(memory.values());    //returns symbol table, for debugging
 
     PascalParser.ConditionBlockContext conditions = ctx.conditionBlock();
     //conditions: expression THEN statement
     //conditions.expression() conditions.statement()
 
-    //visitConditionBlock(PascalParser.ConditionBlockContext
     boolean evaluatedBlock = false;
 
     Value evaluated = this.visit(conditions.expression());
     if(evaluated.asBoolean())
     {
         evaluatedBlock = true;
-        return this.visit(conditions.statement());
+        PascalParser.StatementContext then_statement = conditions.statement();
+        
+        return this.visit(then_statement);
+        
     }
 
     if(!evaluatedBlock && ctx.statement() != null) 
     {
-        // evaluate the else-stat_block (if present == not null)
+        // evaluate the else-stat_block (if present, the else-stat_block == not null)
         return this.visit(ctx.statement());
     }
 

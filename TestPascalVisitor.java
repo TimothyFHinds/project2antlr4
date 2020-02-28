@@ -51,8 +51,33 @@ public class TestPascalVisitor {
         //PascalParser.StatementsContext statements_in_loop = ctx.statement().structuredStatement().compoundStatement().statements();
         
         while(value.asBoolean() && !breakStatus) {
+            
+            //go through the whiledo parse tree
+            Boolean check4Continue = false;
+            PascalParser.StatementsContext ccc = ctx.statement().structuredStatement().compoundStatement().statements();
+            int x = ctx.statement().structuredStatement().compoundStatement().statements().statement().size();
+            int iter = 0;
+            //find out how many statements there are
+            while(iter<x)
+            {
+                this.visit(ccc.statement(iter));
+                iter++;
+                if(continueStatus)
+                {
+                    continueStatus = false;
+                    check4Continue = true;
+                    //if we found a continue then lets break out of this while loop
+                    break;
+                }
+            }
+            if(check4Continue)
+            {
+                check4Continue = false;
+                value = this.visit(ctx.expression());
+                continue;
+            }
             //evaluate the block
-            this.visit(ctx.statement());   
+            //this.visit(ctx.statement());   
             
             value = this.visit(ctx.expression());
         }

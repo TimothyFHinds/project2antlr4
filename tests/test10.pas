@@ -11,8 +11,14 @@ begin
    b := 20;
    c := a + b;
    
-   writeln('Winthin the procedure display');
-   writeln('value of a = ', a , ' b =  ',  b, ' and c = ', c);
+   writeln('Within the procedure display');
+   writeln('value of a = ');
+   writeln(a);
+   writeln('value of b = ' );
+   writeln(b);
+   writeln('value of c = ' );
+   writeln(c);
+
 end;
 
 begin
@@ -20,7 +26,12 @@ begin
    b:= 200;
    c:= a + b;
    
-   writeln('Winthin the program exlocal');
-   writeln('value of a = ', a , ' b =  ',  b, ' and c = ', c);
+   writeln('Within the program');
+   writeln('value of a = ');
+   writeln(a);
+   writeln('value of b = ' );
+   writeln(b);
+   writeln('value of c = ' );
+   writeln(c);   
    display();
 end.

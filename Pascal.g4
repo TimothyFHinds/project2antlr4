@@ -74,7 +74,6 @@ simpleStatement:
 procedureStatement
    : BREAK  #visitBreak
    | CONTINUE   #visitContinue
-   | id ('(' parameterList ')')?        #visitProcId    //not used
    | write  #visitProcWrite                             //not used
    | read   #visitProcRead                              //not used
    ;

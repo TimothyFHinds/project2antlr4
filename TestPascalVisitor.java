@@ -107,37 +107,30 @@ public class TestPascalVisitor {
             //System.out.println(memory.get(id));
 
             Boolean check4Continue = false;
+            //visit statements one at a time within the compound statement block
 
-            //visit statements
-            //if(ctx.statement().structuredStatement().compoundStatement() != null)
-            
-                //then there is a compound statement inside the for loop which is good
-                
-                //visit statements one at a time within the compound statement block
-
-                //List<PascalParser.StatementContext> csb = ctx.statement().structuredStatement().compoundStatement().statements().statement().size();
-                PascalParser.StatementsContext ccc = ctx.statement().structuredStatement().compoundStatement().statements();
-                int x = ctx.statement().structuredStatement().compoundStatement().statements().statement().size();
-                int iter = 0;
-                //find out how many statements there are
-                while(iter<x)
+            //List<PascalParser.StatementContext> csb = ctx.statement().structuredStatement().compoundStatement().statements().statement().size();
+            PascalParser.StatementsContext ccc = ctx.statement().structuredStatement().compoundStatement().statements();
+            int x = ctx.statement().structuredStatement().compoundStatement().statements().statement().size();
+            int iter = 0;
+            //find out how many statements there are
+            while(iter<x)
+            {
+                this.visit(ccc.statement(iter));
+                if(continueStatus)
                 {
-                    this.visit(ccc.statement(iter));
-                    if(continueStatus)
-                    {
-                        continueStatus = false;
-                        check4Continue = true;
-                        //if we found a continue then lets break out of this while loop
-                        break;
-                    }
-                    iter++;
+                    continueStatus = false;
+                    check4Continue = true;
+                    //if we found a continue then lets break out of this while loop
+                    break;
                 }
-                if(check4Continue)
-                {
-                    check4Continue = false;
-                    continue;
-                }
-
+                iter++;
+            }
+            if(check4Continue)
+            {
+                check4Continue = false;
+                continue;
+            }
             //this.visit(ctx.statement());
             
         }

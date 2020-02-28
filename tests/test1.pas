@@ -2,7 +2,7 @@ program test1;
 
 var                 
 z1, z2, z3: REAL; 
-z4: real;             
+z4, y: real;             
 z5, z6: boolean;  
 z7 : real = 25.5;     
 z8 : boolean = TRUE ;    

@@ -29,6 +29,6 @@ begin
     isTrue(a, d, b);
 
     writeln();
-    writeln('Is a and d multipled greater than 100?');
+    writeln('Is 12*d greater than 100?');
     writeln(b);
 end.

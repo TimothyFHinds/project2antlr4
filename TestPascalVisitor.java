@@ -28,16 +28,19 @@ public class TestPascalVisitor {
     private Map<String, Value> procedureVariableMap = new HashMap<String, Value>();
     private Map<String, Value> functionVariableMap = new HashMap<String, Value>();
     private Map<String, Integer> scopeLevelMap = new HashMap<String, Integer>();
+    private Map<String, Integer> scopeNameMap = new HashMap<String, Integer>();
     private ArrayList<String> globalVariables = new ArrayList<String>();
     private ArrayList<String> procedureVariables = new ArrayList<String>();
     private ArrayList<String> functionVariables = new ArrayList<String>();
     private ArrayList<String> procedures = new ArrayList<String>();
     private ArrayList<String> functions = new ArrayList<String>();
+    private int scopeTracker = 1; //This will basically be utilized to keep track of increasing scope level declaration names
     private int scopeLevel = 0; //This will be used to keep track of scope level
     private int inProcedures = 0; // This will be used to see if we are in a procedures function
     private int inFunctions = 0; //This will be used to see if we are in a function
     private int procCount = 0; //This will account for the variables in the procedure variables
     private int funcCount = 0; // This will acount for the variables in the function variables
+    private int locator = 0; // This will keep track of the scope level for procedures, functions
     //private Boolean alreadyKey = false; // This will account for whether something is a key
 
     // @Override public Value visitMainBlock(PascalParser.MainBlockContext ctx) {
@@ -49,6 +52,8 @@ public class TestPascalVisitor {
         //WHILE expression DO statement
         Value value = this.visit(ctx.expression());
         scopeLevel++;
+        scopeNameMap.put("While" + scopeTracker, scopeTracker);
+        scopeTracker++;
         while(value.asBoolean()) {
             //evaluate block
             this.visit(ctx.statement());
@@ -66,6 +71,11 @@ public class TestPascalVisitor {
         Value initial = this.visit(ctx.initialVal);
         Value finalV = this.visit(ctx.finalVal);
         scopeLevel++;
+        scopeLevelMap.put(id, scopeLevel);
+        scopeNameMap.put("FOR" + scopeTracker, scopeTracker);
+        scopeTracker++;
+        memory.put(id, initial);
+
         //Value value = this.visit(ctx.expression());
         for(double i=initial.asDouble(); i<=finalV.asDouble();i++)
         {
@@ -238,10 +248,14 @@ public class TestPascalVisitor {
         }
         else if(inProcedures == 1 && memory.containsKey(id) == false)
         {
+            procCount++;
+            scopeLevelMap.put(id, scopeLevel);
             procedureVariableMap.put(id, value);
         }
         else if(inFunctions == 1 && memory.containsKey(id) == false)
         {
+            funcCount++;
+            scopeLevelMap.put(id, scopeLevel);
             functionVariableMap.put(id, value);
         }
         else
@@ -280,11 +294,15 @@ public class TestPascalVisitor {
                     }
                     else if(inProcedures == 1 && memory.containsKey(newIDEN) == false)
                     {
+                        procCount++;
+                        scopeLevelMap.put(newIDEN, scopeLevel);
                         procedureVariables.add(newIDEN);
                         procedureVariableMap.put(newIDEN, new Value(0.0));
                     }
                     else if(inFunctions == 1 && memory.containsKey(newIDEN) == false)
                     {
+                        funcCount++;
+                        scopeLevelMap.put(newIDEN, scopeLevel);
                         functionVariables.add(newIDEN);
                         functionVariableMap.put(newIDEN, new Value(0.0));
                     }
@@ -314,11 +332,15 @@ public class TestPascalVisitor {
                     }
                     else if(inProcedures == 1 && memory.containsKey(newIDEN) == false)
                     {
+                        procCount++;
+                        scopeLevelMap.put(newIDEN, scopeLevel);
                         procedureVariables.add(newIDEN);
                         procedureVariableMap.put(newIDEN, new Value(true));
                     }
                     else if(inFunctions == 1 && memory.containsKey(newIDEN) == false)
                     {
+                        funcCount++;
+                        scopeLevelMap.put(newIDEN, scopeLevel);
                         functionVariables.add(newIDEN);
                         functionVariableMap.put(newIDEN, new Value(true));
                     }
@@ -346,11 +368,15 @@ public class TestPascalVisitor {
                     }
                     else if(inProcedures == 1 && memory.containsKey(newIDEN) == false)
                     {
+                        procCount++;
+                        scopeLevelMap.put(newIDEN, scopeLevel);
                         procedureVariables.add(newIDEN);
                         procedureVariableMap.put(newIDEN, new Value(""));
                     }
                     else if(inFunctions == 1 && memory.containsKey(newIDEN) == false)
                     {
+                        funcCount++;
+                        scopeLevelMap.put(newIDEN, scopeLevel);
                         functionVariables.add(newIDEN);
                         functionVariableMap.put(newIDEN, new Value(""));
                     }
@@ -570,37 +596,41 @@ public class TestPascalVisitor {
         Value value = null;
         if(inProcedures == 1)
         {
-            value = procedureVariableMap.get(id);
-
-            if(value == null && scopeLevelMap.get(id) == 0)
+            if(locator == scopeLevelMap.get(id))
+            {
+                value = procedureVariableMap.get(id);
+            }
+            else if(value == null && scopeLevelMap.get(id) == 0)
             {
                 value = memory.get(id);
             }
-            if(value == null)
+            else if(value == null)
             {
-                throw new RuntimeException("no such variable: " + id);
+                System.out.println("No such variable: " + id);
             }
         }
         else if(inFunctions == 1)
         {
-            value = functionVariableMap.get(id);
-
-            if(value == null && scopeLevelMap.get(id) == 0)
+            if(locator == scopeLevelMap.get(id))
+            {
+                value = functionVariableMap.get(id);
+            }
+            else if(value == null && scopeLevelMap.get(id) == 0)
             {
                 value = memory.get(id);
             }
-            if(value == null)
+            else if(value == null)
             {
-                throw new RuntimeException("no such variable: " + id);
+                System.out.println("No such variable: " + id);
             }
         }
         else
         {
             //System.out.println("The scope level is currently: " + scopeLevel);
-            if(scopeLevelMap.get(id) == null)
-            {
-                scopeLevelMap.put(id, scopeLevel);
-            }
+            // if(scopeLevelMap.get(id) == null)
+            // {
+            //     scopeLevelMap.put(id, scopeLevel);
+            // }
 
             if(scopeLevelMap.get(id) == 0)
             {
@@ -610,10 +640,9 @@ public class TestPascalVisitor {
             {
                 value = memory.get(id);
             }
-
-            if(value == null)
+            else if(value == null)
             {
-                throw new RuntimeException("no such variable: " + id);
+                System.out.println("No such variable: " + id);
             }
 
         }
@@ -773,6 +802,7 @@ public class TestPascalVisitor {
         int correctPosition = 0; //Keeps track of the correct position of procedure variables
         if(procedures.contains(name))
         {
+            locator = scopeNameMap.get(name);
             int location = procedures.indexOf(name);
             if(location > 0)
             {
@@ -801,9 +831,12 @@ public class TestPascalVisitor {
             // {
             //     System.out.println(names);
             // }
+            int space = procedures.indexOf(name) + 1;
+            int totalNumberOfVariables = Integer.parseInt(procedures.get(space)) + procCount;
+            procedures.set(space, Integer.toString(totalNumberOfVariables));
+
             location = correctPosition;
             //System.out.println("The value of location is: " + location);
-
             index = 0;
             if(elements.length != 0)
             {
@@ -815,6 +848,7 @@ public class TestPascalVisitor {
                 }
             }
             
+            procCount = 0;
             inProcedures = 0;
         }
         else
@@ -835,6 +869,9 @@ public class TestPascalVisitor {
         else
         {
             scopeLevel++;
+            scopeNameMap.put(procName, scopeTracker);
+            scopeTracker++;
+
             procedures.add(procName);
             procMap.put(procName, ctx.block());
 
@@ -861,6 +898,7 @@ public class TestPascalVisitor {
 
     if(functions.contains(name))
     {
+        locator = scopeNameMap.get(name);
         int location = functions.indexOf(name);
         correctPosition = location;
         inFunctions = 1;
@@ -895,7 +933,11 @@ public class TestPascalVisitor {
         // {
         //     System.out.println(names);
         // }
+        int space = functions.indexOf(name) + 1;
+        int totalNumberOfVariables = Integer.parseInt(functions.get(space)) + funcCount;
+        functions.set(space, Integer.toString(totalNumberOfVariables));    
 
+        funcCount = 0;
         inFunctions = 0;
 
         return functionVariableMap.get(name);
@@ -918,6 +960,9 @@ public class TestPascalVisitor {
        else
        {
            scopeLevel++;
+           scopeNameMap.put(funcName, scopeTracker);
+           scopeTracker++;
+
            functions.add(funcName);
            funcMap.put(funcName, ctx.block());
 

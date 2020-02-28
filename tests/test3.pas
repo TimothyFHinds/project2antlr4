@@ -17,6 +17,8 @@ begin
         writeln();
     end;
 
+    writeln();
+    
     //for downto loop
     for num2 := 20 downto 10 do
     begin 

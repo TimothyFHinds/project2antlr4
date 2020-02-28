@@ -203,8 +203,11 @@ Turn in all the files needed to run your project. This includes the grammar file
 Implement a simple version of constant propagation. That is if the code contains calculations using constants that can be performed at compile time, perform such computations as you parse the code. For example, the AST for " v = 2*(10+11)" will become "v=42" and "v=v+2*3" becomes "v=v+6". To prove that this is the case, print your AST. Notice that this is not possible (or at least very hard) to do if you use the Antlr parse trees (requires parse tree rewrite which is hard and undocumented). We will implement the more complex version of constant propagation in a subsequent project.
 Implement formal parameter passing in procedures/functions. Procedures should be able to declare formal parameters that can be passed when they are called. These variables should be correctly scoped as well.
 
+# Bonuses Attempted
 
-
+The formal parameter passing in procedures/functions should be implemented correctly.
+These can be seen in tests/test6.pas and tests/test7.pas.
+These items should be scoped correctly as they all should have a scope level of 1, which is 1 value higher than the global variables.
 
 
 

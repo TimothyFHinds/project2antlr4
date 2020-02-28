@@ -2,19 +2,22 @@ program test9;
 
 var 
 A : REAL;
+B : REAL = 12.0;
 
-  procedure ScopeInner;
-  var A : REAL;
-  begin
+procedure ScopeInner(var c : real);
+var A : REAL;
+begin
     A := 10;
-    writeln (A)
-  end;
+    //writeln (A)
+end;
 
 begin (* Main *)
-  A := 20;
-  writeln (A);
-  ScopeInner;
-  writeln (A);
+    writeln('Old Value of A');
+    A := 20;
+    writeln (A);
+    ScopeInner(B);
+    writeln('New Value of A');
+    writeln (A);
 end. 
 (* Main *)
 

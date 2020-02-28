@@ -29,5 +29,4 @@ begin
 
     writeln('Minimum of your 3 numbers: ');
     writeln(min);
-
 end.

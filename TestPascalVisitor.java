@@ -40,17 +40,15 @@ public class TestPascalVisitor {
     private int funcCount = 0; // This will acount for the variables in the function variables
     //private Boolean alreadyKey = false; // This will account for whether something is a key
 
-    @Override public Value visitMainBlock(PascalParser.MainBlockContext ctx) {
-        scopeLevel++;
-        return this.visit(ctx.statements());
-    }
+    // @Override public Value visitMainBlock(PascalParser.MainBlockContext ctx) {
+    //     scopeLevelMap.forEach((key, value) -> System.out.println(key + " " + value));
+    //     return this.visit(ctx.statements());
+    // }
 
     @Override public Value visitWhileDoStatement(PascalParser.WhileDoStatementContext ctx) {
         //WHILE expression DO statement
         Value value = this.visit(ctx.expression());
-
         scopeLevel++;
-
         while(value.asBoolean()) {
             //evaluate block
             this.visit(ctx.statement());
@@ -399,13 +397,14 @@ public class TestPascalVisitor {
                     }
                     else if(inProcedures == 1)
                     {
-                        //scopeLevelMap.put(newIDEN, scopeLevel);
+                        scopeLevelMap.put(newIDEN, scopeLevel);
                         procCount++;
                         procedureVariables.add(newIDEN);
                         procedureVariableMap.put(newIDEN, new Value(0.0));
                     }
                     else if(inFunctions == 1)
                     {
+                        scopeLevelMap.put(newIDEN, scopeLevel);
                         funcCount++;
                         functionVariables.add(newIDEN);
                         functionVariableMap.put(newIDEN, new Value(0.0));
@@ -427,12 +426,14 @@ public class TestPascalVisitor {
                     }
                     else if(inProcedures == 1)
                     {
+                        scopeLevelMap.put(newIDEN, scopeLevel);
                         procCount++;
                         procedureVariables.add(newIDEN);
                         procedureVariableMap.put(newIDEN, new Value(true));
                     }
                     else if(inFunctions == 1)
                     {
+                        scopeLevelMap.put(newIDEN, scopeLevel);
                         funcCount++;
                         functionVariables.add(newIDEN);
                         functionVariableMap.put(newIDEN, new Value(true));
@@ -451,13 +452,14 @@ public class TestPascalVisitor {
                     }
                     else if(inProcedures == 1)
                     {
-                        //scopeLevelMap.put(newIDEN, scopeLevel);
+                        scopeLevelMap.put(newIDEN, scopeLevel);
                         procCount++;
                         procedureVariables.add(newIDEN);
                         procedureVariableMap.put(newIDEN, new Value(""));
                     }
                     else if(inFunctions == 1)
                     {
+                        scopeLevelMap.put(newIDEN, scopeLevel);
                         funcCount++;
                         functionVariables.add(newIDEN);
                         functionVariableMap.put(newIDEN, new Value(""));
@@ -803,12 +805,16 @@ public class TestPascalVisitor {
             //System.out.println("The value of location is: " + location);
 
             index = 0;
-            for(String names: elements)
+            if(elements.length != 0)
             {
+                for(String names: elements)
+                {
                 memory.replace(elements[index], procedureVariableMap.get(procedureVariables.get(location)));
                 location++;
                 index++;
+                }
             }
+            
             inProcedures = 0;
         }
         else

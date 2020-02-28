@@ -170,6 +170,11 @@ Value is set equal to the two multiplied numbers and that is then compared to th
 The result of whether value is greater than or less than result is then stored into variable g.
 The global variable, b, is set equal to g and then b is printed out to the screen.
 
+- We also included a for loop in the procedure.
+- The functionality of this for loop is to just print the "|" symbol.
+- This changed a variable assigned in the procedure and interated from 5 to 10.
+
+
 ## tests/test9.pas
 
 Test case #9 essentially tests our static scoping.

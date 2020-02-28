@@ -100,8 +100,11 @@ Test case #1 basically covered all of the basic math functions that were utilize
 
 ## tests/test2.pas
 
-Test case #2 covers the while-do loop that we had to implement.
+Test case #2 implements a static while loop decrementing from 20 to 1.
+
+Test case #22 covers the while-do loop that we had to implement.
 This statement essentially asks for a number to count from and decrements it until it is equal to 0.
+    **Incorporates readln()
 
 ## tests/test3.pas
 
@@ -116,6 +119,8 @@ Test case #4 covers our break statement.
 Test case #5 covers our continue statement.
 
 ## tests/test6.pas
+
+moved the version with readln() to test66.pas
 
 Test case #6 involves the testing of user defined procedures.
 In this file, we read in three different numbers. These numbers should be type and then set with the return key.

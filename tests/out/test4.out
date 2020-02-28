@@ -1,0 +1,39 @@
+'value of num1'
+10.0
+'value of num1'
+11.0
+'value of num1'
+12.0
+'value of num1'
+13.0
+'value of num1'
+14.0
+'value of num1'
+15.0
+
+'value of num2: '
+10.0
+'value of num2: '
+11.0
+'value of num2: '
+12.0
+'value of num2: '
+13.0
+'value of num2: '
+14.0
+'value of num2: '
+15.0
+
+'value of num1'
+10.0
+'value of num1'
+11.0
+'value of num1'
+12.0
+'value of num1'
+13.0
+'value of num1'
+14.0
+'value of num1'
+15.0
+'expect output 15 for each loop'

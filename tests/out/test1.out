@@ -1,0 +1,42 @@
+'Testfinal Begin'
+'----------------'
+'Testing most general functionalities in one file'
+
+61.0
+50.0
+5.0
+69.0
+2.0
+2.0
+3.0
+1.0
+15.0
+3.0
+'Correct output'
+'Correct output'
+'Correct output'
+'Correct output'
+'Correct output'
+'Correct output'
+'Correct output'
+'Correct output'
+'Correct output'
+'Correct output'
+'Correct output'
+'Correct output'
+'Correct output'
+'Correct output'
+'Correct output'
+'Correct output'
+2.0
+'testing y := sqrt(NUM), sin(NUM), cos(NUM), exp(NUM), ln(NUM) functions(NUM)'
+'EXPECT: 13.0'
+13.0
+'EXPECT: 0.0'
+0.0015926529164868282
+'EXPECT 1.0'
+1.0
+'EXPECT close to 1.0'
+0.999896315728952
+'EXPECT close to 1.0'
+1.0

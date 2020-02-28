@@ -1,4 +1,4 @@
-program test6;
+program test66;
 
 var 
 a, b, c, min: REAL;
@@ -21,12 +21,12 @@ end;
 
 //main block
 begin
-    writeln('Checking for minimum of 3 numbers');
-    a := 500;
-    b := 300;
-    c := 700;
+    writeln('Enter three numbers: ');
+    readln(a);
+    readln(b);
+    readln(c);
     findMin(a, b, c, min);
 
-    writeln('Minimum of the 3 numbers: ');
+    writeln('Minimum of your 3 numbers: ');
     writeln(min);
 end.

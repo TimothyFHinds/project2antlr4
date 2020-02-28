@@ -1,14 +1,17 @@
 program test2;
 
 var 
-num1 : REAL = 20;
+num1 : REAL;
+num2 : REAL;
+
 
 begin
 
-    writeln('Counting down from 20');
-    
+    writeln('Count down from?');
+    readln(num1);
     while num1>0 do
         begin
+            writeln('The value of num1: ');
             writeln(num1);
             writeln();  
             num1 := num1 - 1;

@@ -39,18 +39,18 @@ grun Pascal program -gui tests/testX.pas
 
 # QUESTIONS!
 
-# Changes Needed:
-    PascalBaseVisitor.java has the base visitor methods WITHOUT any written methods
+# Functionalities:    
     TestPascalVisitor.java contains all of OUR WRITTEN visitor methods
         it @Override's the visitors in PascalBaseVisitor.java
     
+    --project1 implementations
+        testfile: tests/test1.pas
+
     --while-do 
         testfile: tests/test2.pas      
-        
 
     --for-do loops
         testfile: tests/test3.pas      
-        
 
     --break keyword
         testfile: tests/test4.pas      

@@ -81,7 +81,6 @@ grun Pascal program -gui tests/testX.pas
 
     --Implement static scoping
 
-
 # Specific requirements:
 # Part of the language to implement:
 # For this project, you probably need to re-implement the previous part of the language and to add:

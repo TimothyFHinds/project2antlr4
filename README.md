@@ -78,9 +78,6 @@ grun Pascal program -gui tests/testX.pas
         
 
 
-    --Implement scoping
-        -see symbol table definition from antlr4 documentation
-        https://github.com/antlr/symtab/tree/master/src/org/antlr/symtab
 
     --Implement static scoping
 

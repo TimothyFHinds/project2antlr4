@@ -26,6 +26,9 @@ begin
     b := 200;
     //function call to find max value
     ret := max(a, b);
+    writeln('The values are: ');
+    writeln(a);
+    writeln(b);
 
     writeln('Max value is ');
     writeln(ret);

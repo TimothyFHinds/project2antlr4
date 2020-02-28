@@ -37,6 +37,8 @@ grun Pascal program -gui tests/testX.pas
         see tests/old/test1.pas line 10
         see tests/old/test2.pas line 7/8
 
+    We cannot create variables with the same name. If it is already create, we cannot make a new one of the same name.
+
 # QUESTIONS!
 
 # Functionalities:    
@@ -80,6 +82,78 @@ grun Pascal program -gui tests/testX.pas
 
 
     --Implement static scoping
+        testfile: tests/test9.pas
+
+        This was completed by creating a hashmap called scopeLevelMap.
+        The idea of scope level map is to consider the scope level that a variable is created at.
+        All global variables have the scope level of 0 and they can be accessed at any other scope level.
+        Scope levels increased whenever a procedure/function/for-do statement/while loop were created.
+
+
+
+
+# Test Cases and What They Cover
+
+## tests/test1.pas
+
+Test case #1 basically covered all of the basic math functions that were utilized in the first project.
+
+## tests/test2.pas
+
+Test case #2 covers the while-do loop that we had to implement.
+This statement essentially asks for a number to count from and decrements it until it is equal to 0.
+
+## tests/test3.pas
+
+Test case #3 covers the for-do loops and will basically print out all values in the for loop from 10 to 20.
+
+## tests/test4.pas
+
+Test case #4 covers our break statement.
+
+## tests/test5.pas
+
+Test case #5 covers our continue statement.
+
+## tests/test6.pas
+
+Test case #6 involves the testing of user defined procedures.
+In this file, we read in three different numbers. These numbers should be type and then set with the return key.
+Afterwards, we take the three different numbers that we get and an empty variable called min.
+In the procedure, we test our three different numbers and set min equal to that number, which is represented by m in the procedure.
+After the procedure is done executing, we set the value in m equivalent to the value in min.
+In the end, we print out the smallest number represented by min.
+
+## tests/test7.pas
+
+Test case #7 involves the testing of user defined functions.
+In this test file, we essentially set the variable ret equivalent to the result of a max function.
+The max function essentially gets the max between two different numbers and will return it when called.
+
+## tests/test8.pas
+
+Test case #8 essentially tests creating new variables in the procedure method.
+The test case reads in one number that will be multiplied with a predetermined variable.
+The procedure is called and the predetermined number (12.0) is multiplied with the user entered number to see if it is greater than 100.
+The variables, value and result, were created in the procedure method and used to help determine if the two numbers are greater than result, which is equal to 100.
+Value is set equal to the two multiplied numbers and that is then compared to the result.
+The result of whether value is greater than or less than result is then stored into variable g.
+The global variable, b, is set equal to g and then b is printed out to the screen.
+
+- We also included a for loop in the procedure.
+- The functionality of this for loop is to just print the "|" symbol.
+- This changed a variable assigned in the procedure and interated from 5 to 10.
+
+
+## tests/test9.pas
+
+Test case #9 essentially tests our static scoping.
+In our test, we set the variable A equal to 20.
+Afterwards, we create a procedure called ScopeInner, which tries to create a variable equal to our global variable.
+The screen prints out "Already a global variable" because you cannot create a new variable named after a global variable.
+In our procedure, we then change our global variable A to a different value, 10.0.
+After the procedure, we print out our A in the main block and it returns the new value 10.0.
+
 
 # Specific requirements:
 # Part of the language to implement:
@@ -105,8 +179,11 @@ Turn in all the files needed to run your project. This includes the grammar file
 Implement a simple version of constant propagation. That is if the code contains calculations using constants that can be performed at compile time, perform such computations as you parse the code. For example, the AST for " v = 2*(10+11)" will become "v=42" and "v=v+2*3" becomes "v=v+6". To prove that this is the case, print your AST. Notice that this is not possible (or at least very hard) to do if you use the Antlr parse trees (requires parse tree rewrite which is hard and undocumented). We will implement the more complex version of constant propagation in a subsequent project.
 Implement formal parameter passing in procedures/functions. Procedures should be able to declare formal parameters that can be passed when they are called. These variables should be correctly scoped as well.
 
+# Bonuses Attempted
 
-
+The formal parameter passing in procedures/functions should be implemented correctly.
+These can be seen in tests/test6.pas and tests/test7.pas.
+These items should be scoped correctly as they all should have a scope level of 1, which is 1 value higher than the global variables.
 
 
 

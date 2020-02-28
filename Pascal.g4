@@ -4,9 +4,10 @@ programHeading: PROGRAM id ';';
 id: 
     ID;
 block:
-     variableDecBlock* procAndFuncDecPart? compoundStatement
+     variableDecBlock* procAndFuncDecPart? mainBlock
      //(constantDefBlock | typeDefBlock | variableDecBlock)* compoundStatement
     ;
+mainBlock: BEGIN statements END;
 //constantDefBlock: ; //extra credit
 //typeDefBlock: ; //extra credit
 variableDecBlock:
@@ -15,7 +16,7 @@ variableDecBlock:
 variableDeclaration:
     idList ':' type
     | id ':' type '=' input
-    ;
+    ; 
 input:
     BOOLINPUT   #boolInput
     | NUM   #numInput
@@ -39,7 +40,7 @@ procOrFuncDec:
     | functionDeclaration;
 
 procedureDeclaration:
-    PROCEDURE id (formalParameterList)? ';' block
+    PROCEDURE procName=id (procVariable=formalParameterList)? ';' block
     ;
 formalParameterList: 
     '(' formalParam (';' formalParam)* ')'
@@ -55,7 +56,7 @@ parameterGroup:
     ;
     
 functionDeclaration:
-    FUNCTION id (formalParameterList)? ':' type ';' block
+    FUNCTION functionName=id (functionVariables=formalParameterList)? ':' type ';' block
     ;
     //nice
 
@@ -69,8 +70,12 @@ statement:
     | structuredStatement ;
 simpleStatement: 
      assignStatement
+    | procedureCall
     | procedureStatement
     | emptyStatement;
+procedureCall: 
+    name=id ('(' params=parameterList ')')?
+    ;  
 procedureStatement
    : BREAK  #visitBreak
    | CONTINUE   #visitContinue

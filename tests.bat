@@ -71,9 +71,16 @@ java TestPascalVisitor tests/test6.pas
 
 ECHO. 
 
+:: Test 7
+java TestPascalVisitor tests/test7.pas >> tests/out/result7.txt
 
+ECHO. 
 
-::TEST 7 MISSING!!
+:: Display output of Test7
+java TestPascalVisitor tests/test7.pas
+
+ECHO. 
+
 
 
 :: Test 81
@@ -179,7 +186,16 @@ del tests\out\result6.txt
 ECHO.
 
 
-::TEST 7 MISSING!!
+:: Test7
+ECHO.
+fc /b tests\out\test7.out tests\out\result7.txt > nul
+if errorlevel 1 (
+    echo Test7.pas Did not match expected output!
+) else (
+    echo Test7.pas SUCCESSFUL OUTPUT MATCHED!
+)
+del tests\out\result7.txt
+ECHO.
 
 
 :: Test81

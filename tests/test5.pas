@@ -48,4 +48,14 @@ begin
 
     writeln();
 
+    writeln('For loop with continue, output should skip 15');
+    for num2 := 10 to 20 do 
+    begin 
+        if(num2 = 15) then
+            continue;
+        writeln(num2);
+    end;
+
+    writeln();
+
 end.

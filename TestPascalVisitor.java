@@ -98,12 +98,7 @@ public class TestPascalVisitor {
         String id = ctx.id().getText();
         Value initial = this.visit(ctx.initialVal);
         Value finalV = this.visit(ctx.finalVal);
-        //Double initialVal = initial.asDouble();
-        //Double finalVal = finalV.asDouble();
-
-
-        //memory.replace(id, new Value(initialVal));
-        //System.out.println(initial.asDouble());
+        
         for(double i=initial.asDouble(); i<=finalV.asDouble();i++)
         {   
             //first update the value of the iterating variable
@@ -143,18 +138,8 @@ public class TestPascalVisitor {
                     continue;
                 }
 
-            
-            
             //this.visit(ctx.statement());
-
             
-            //execute statement
-            /*if(continueStatus) 
-            {
-                continueStatus = false; //reset continueStatus
-                memory.replace(id, new Value(i));  
-                 continue;  
-            }*/
         }
         breakStatus = false;
         return Value.VOID;

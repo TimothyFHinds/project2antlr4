@@ -76,11 +76,11 @@ simpleStatement:
 procedureCall: 
     name=id ('(' params=parameterList ')')?
     ;  
-procedureStatement:   
-     write
-   | read
-   | CONTINUE 
-   | BREAK
+procedureStatement
+   : BREAK  #visitBreak
+   | CONTINUE   #visitContinue
+   | write  #visitProcWrite                             //not used
+   | read   #visitProcRead                              //not used
    ;
 write:
     WRITELN '(' expression ')'  #visitWriteExpr

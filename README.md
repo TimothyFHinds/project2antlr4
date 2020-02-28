@@ -6,13 +6,12 @@
 2. cd pascal
 3. antlr4 -visitor Pascal.g4
 4. javac *.java
-5. java TestPascalVisitor tests/test1.pas       <- for Project1 implementations
-
+5. java TestPascalVisitor tests/test1.pas       <- for P1 implementations
 6. java TestPascalVisitor tests/test2.pas       <- while do loops
-                                test3.pas       <- for do loops
+                                test3.pas       <- for do loops (TO/DOWNTO)
                                 test4.pas       <- break statements,
                                                     multiple loops in one program
-                                test5.pas       <- continue statement
+                                test5.pas       <- while continue statement
                                 test6.pas       <- procedures
                                 test7.pas       <- functions
 # Test File Script:
@@ -32,9 +31,7 @@ grun Pascal program -gui tests/testX.pas
 
 
 # Assumptions:
-    strings print with 'quotes' around them for now.
-        if we get enough time we can fix this later
-    
+    strings print with quotes around them ''    
     can't deal with negative number inputs
         --negative sign when user inputs negative numbers is "extraneous input"
         see tests/old/test1.pas line 10
@@ -43,74 +40,45 @@ grun Pascal program -gui tests/testX.pas
     We cannot create variables with the same name. If it is already create, we cannot make a new one of the same name.
 
 # QUESTIONS!
-    --how can we remove the clutter files showing up in the directory?******super annoying to look at i know lol
 
-# Changes Needed:
-    PascalBaseVisitor.java has the base visitor methods WITHOUT any written methods
+# Functionalities:    
     TestPascalVisitor.java contains all of OUR WRITTEN visitor methods
         it @Override's the visitors in PascalBaseVisitor.java
     
+    --project1 implementations
+        testfile: tests/test1.pas
+
     --while-do 
         testfile: tests/test2.pas      
-        
-        add labels to the grammar rule in Pascal.g4
-            `#whileDoExp1`
-            see `expression` grammar rule in Pascal.g4 for example.
-            
-        After adding labels rerun: antlr4 -visitor Pascal.g4
-            javac *.java
-            java TestPascalVisitor.java
-            its a monster full of Visitor methods
 
     --for-do loops
         testfile: tests/test3.pas      
-        
-        add labels to the grammar rule in Pascal.g4
-            
-        After adding labels rerun: antlr4 -visitor Pascal.g4
-            javac *.java
-            java TestPascalVisitor.java
-            its a monster full of Visitor methods
 
     --break keyword
         testfile: tests/test4.pas      
+        consider changing ifVisitor and caseVisitor
+            base cases might not want to return null
         
-        add labels to the grammar rule in Pascal.g4
-            
-        After adding labels rerun: antlr4 -visitor Pascal.g4
-            javac *.java
-            java TestPascalVisitor.java
-            its a monster full of Visitor methods
+        figure out return type to identify null statements
+
+        try {} catch {} ?
+        https://www.geeksforgeeks.org/throw-throws-java/
+
+        throw an exception within break
+        catch it within the loop methods
     
     --continue keyword  
         testfile: tests/test5.pas      
         
-        add labels to the grammar rule in Pascal.g4
-            
-        After adding labels rerun: antlr4 -visitor Pascal.g4
-            javac *.java
-            java TestPascalVisitor.java
-            its a monster full of Visitor methods
 
     --user defined procedures
         testfile: tests/test6.pas
         
-        add labels to the grammar rule in Pascal.g4
-            
-        After adding labels rerun: antlr4 -visitor Pascal.g4
-            javac *.java
-            java TestPascalVisitor.java
-            its a monster full of Visitor methods
 
     --user defined functions
         testfile: tests/test7.pas      
         
-        add labels to the grammar rule in Pascal.g4
-            
-        After adding labels rerun: antlr4 -visitor Pascal.g4
-            javac *.java
-            java TestPascalVisitor.java
-            its a monster full of Visitor methods
+
 
 
     --Implement static scoping
@@ -120,6 +88,8 @@ grun Pascal program -gui tests/testX.pas
         The idea of scope level map is to consider the scope level that a variable is created at.
         All global variables have the scope level of 0 and they can be accessed at any other scope level.
         Scope levels increased whenever a procedure/function/for-do statement/while loop were created.
+
+
 
 
 # Test Cases and What They Cover
@@ -183,6 +153,7 @@ Afterwards, we create a procedure called ScopeInner, which tries to create a var
 The screen prints out "Already a global variable" because you cannot create a new variable named after a global variable.
 In our procedure, we then change our global variable A to a different value, 10.0.
 After the procedure, we print out our A in the main block and it returns the new value 10.0.
+
 
 # Specific requirements:
 # Part of the language to implement:

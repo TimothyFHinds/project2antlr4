@@ -170,7 +170,9 @@ whileDoStatement:
 
 
 forDoStatement:
-    FOR id LET initialVal=expression TO finalVal=expression DO statement;
+    FOR id LET initialVal=expression TO finalVal=expression DO statement #visitForTo
+    | FOR id LET initialVal=expression DOWNTO finalVal=expression DO statement #visitForDownto
+    ;
 //when implementing the visitor we can merge these two grammar rules if necessary
 //forList:
   //  initialVal=expression TO finalVal=expression;
@@ -254,6 +256,7 @@ FOR: F O R ;
 CONTINUE: C O N T I N U E ;
 BREAK: B R E A K ;
 TO: T O ;
+DOWNTO: D O W N T O ;
 OF: O F ;
 RETURN: R E T U R N ;
 LET: ':=' ;

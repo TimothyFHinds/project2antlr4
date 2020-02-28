@@ -8,3 +8,6 @@ PascalLexer.*
 PascalListener.*
 PascalParser.*
 PascalVisitor.*
+Value.class
+TestPascalVisitor.class
+TestPascalVisitor$EvalVisitor.class

@@ -981,12 +981,18 @@ public class TestPascalVisitor {
             // }
             int space = procedures.indexOf(name) + 1;
             int totalNumberOfVariables = Integer.parseInt(procedures.get(space)) + procCount;
-            procedures.set(space, Integer.toString(totalNumberOfVariables));
+            procedures.set(space, Integer.toString(totalNumberOfVariables));   
 
             location = correctPosition;
             //System.out.println("The value of location is: " + location);
             index = 0;
-            if(elements.length != 0)
+            int size = elements.length;
+            //This will check to see if the procedure was called with no parameters!
+            if(elements.length == 1 && elements[0].isBlank())
+            {
+                size = 0;
+            }
+            if(size != 0)
             {
                 for(String names: elements)
                 {
@@ -1060,7 +1066,7 @@ public class TestPascalVisitor {
         PascalParser.BlockContext block = funcMap.get(name);
         this.visit(block);
 
-        // System.out.println("I got to after the function call!");
+        //System.out.println("I got to after the function call!");
 
         // System.out.println("All Global Variables");
 
@@ -1080,10 +1086,11 @@ public class TestPascalVisitor {
         // {
         //     System.out.println(names);
         // }
+
         int space = functions.indexOf(name) + 1;
         int totalNumberOfVariables = Integer.parseInt(functions.get(space)) + funcCount;
-        functions.set(space, Integer.toString(totalNumberOfVariables));    
-
+        functions.set(space, Integer.toString(totalNumberOfVariables));   
+        
         funcCount = 0;
         inFunctions = 0;
 

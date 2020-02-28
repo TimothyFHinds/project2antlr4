@@ -1,10 +1,11 @@
 program test10;
+
 var
-   a, b, c: integer;
+   a, b, c: REAL;
 
 procedure display();
 var
-   a, b, c: integer;
+   a, b, c: REAL;
 begin
    (* local variables *)
    a := 10;
@@ -18,7 +19,6 @@ begin
    writeln(b);
    writeln('value of c = ' );
    writeln(c);
-
 end;
 
 begin
@@ -33,5 +33,5 @@ begin
    writeln(b);
    writeln('value of c = ' );
    writeln(c);   
-   display();
+   display( );
 end.

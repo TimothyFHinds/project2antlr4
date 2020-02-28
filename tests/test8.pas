@@ -12,7 +12,13 @@ procedure isTrue(var e, f: real; var g: boolean);
 var
     value : real;
     result : REAL = 100.0;
+    h : REAL;
 begin
+    for h := 5 to 10 do
+    begin
+        writeln('|');
+    end;
+    writeln('V');
     value := e * f;
     if(value > result) then
     g := true
@@ -25,6 +31,7 @@ begin
     writeln('Start Test Case #8');
     writeln('Enter a number for d: ');
     readln(d);
+    writeln();
 
     isTrue(a, d, b);
 

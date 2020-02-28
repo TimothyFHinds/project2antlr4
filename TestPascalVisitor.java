@@ -71,15 +71,24 @@ public class TestPascalVisitor {
         Value initial = this.visit(ctx.initialVal);
         Value finalV = this.visit(ctx.finalVal);
         scopeLevel++;
-        scopeLevelMap.put(id, scopeLevel);
         scopeNameMap.put("FOR" + scopeTracker, scopeTracker);
         scopeTracker++;
-        memory.put(id, initial);
-
+        //memory.replace(id, initial);
         //Value value = this.visit(ctx.expression());
         for(double i=initial.asDouble(); i<=finalV.asDouble();i++)
         {
-            memory.replace(id, new Value(i));
+            if(inProcedures == 1 && procedureVariableMap.containsKey(id))
+            {
+                procedureVariableMap.replace(id, new Value(i));
+            }
+            else if(inFunctions == 1 && functionVariableMap.containsKey(id))
+            {
+                functionVariableMap.replace(id, new Value(i));
+            }
+            else
+            {
+                memory.replace(id, new Value(i));
+            }
             //execute statement
             this.visit(ctx.statement());
             //value = this.visit(ctx.expression());
@@ -600,7 +609,8 @@ public class TestPascalVisitor {
             {
                 value = procedureVariableMap.get(id);
             }
-            else if(value == null && scopeLevelMap.get(id) == 0)
+
+            if(value == null && scopeLevelMap.get(id) == 0)
             {
                 value = memory.get(id);
             }
@@ -678,7 +688,7 @@ public class TestPascalVisitor {
 
        if(inProcedures == 1)
         {
-            if(procedureVariableMap.containsKey(id))
+            if(procedureVariableMap.containsKey(id) && locator == scopeLevelMap.get(id))
             {
                 return new Value(procedureVariableMap.put(id, value));
             }
@@ -686,8 +696,9 @@ public class TestPascalVisitor {
             {
                 return new Value(memory.put(id, value));
             }
-            if(value == null)
+            else if(value == null)
             {
+
                 throw new RuntimeException("no such variable: " + id);
             }
 
@@ -695,7 +706,7 @@ public class TestPascalVisitor {
         }
         else if(inFunctions == 1)
         {
-            if(functionVariableMap.containsKey(id))
+            if(functionVariableMap.containsKey(id) && locator == scopeLevelMap.get(id))
             {
                 return new Value(functionVariableMap.put(id, value));
             }
@@ -703,7 +714,7 @@ public class TestPascalVisitor {
             {
                 return new Value(memory.put(id, value));
             }
-            if(value == null)
+            else if(value == null)
             {
                 throw new RuntimeException("no such variable: " + id);
             }

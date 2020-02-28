@@ -8,30 +8,44 @@ num2 : REAL;
 //https://www.tutorialspoint.com/pascal/pascal_continue_statement.htm
 begin
     
-    for num1 := 1 to 10 do
-    begin
-        if(num1=5) then
-            continue;
-    Writeln (num1);
-    end;
-
-    writeln();
-
     num1 := 10;
-
+    writeln('While loop with continue, 3 should be missing');
     while num1>0 do
         begin
-            if(num1 = 5) then //skip iteration 5
+            if(num1 = 3) then //skip iterations 0-3
                 begin
                     num1 := num1 - 1;
                     continue;
                 end;
-            writeln('The value of num1: ');
-            writeln(num1);
-            writeln();  
+            writeln(num1);  
             num1 := num1 - 1;
         end;
 
+    writeln();
 
+    num1 := 1;
+    writeln('While loop with continue,  should print from 1 to 5');
+    while num1<10 do
+        begin
+            if(num1 > 5) then //skip iterations 5-10
+                begin
+                    num1 := num1 + 1;
+                    continue;
+                end;
+            writeln(num1);  
+            num1 := num1 + 1;
+        end;
+
+    writeln();
+
+    writeln('For loop with continue, output should go from 10 to 14');
+    for num2 := 10 to 20 do 
+    begin 
+        if(num2 > 14) then
+            continue;
+        writeln(num2);
+    end;
+
+    writeln();
 
 end.

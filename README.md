@@ -36,9 +36,9 @@ java TestPascalVisitor tests/test88.pas
                                 test6.pas       <- procedures
                                 test66.pas      <- procedures with readln()
                                 test7.pas       <- functions
+                                test8.pas       <- procedures with readln() 
                                 test81.pas      <- procedure true case
                                 test82.pas      <- procedure false case
-                                test88.pas      <- procedure with readln()
                                 test9.pas       <- scoping
                                 test10.pas      <- static scoping 
 

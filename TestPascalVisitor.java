@@ -67,28 +67,46 @@ public class TestPascalVisitor {
         String id = ctx.id().getText();
         Value initial = this.visit(ctx.initialVal);
         Value finalV = this.visit(ctx.finalVal);
-        Double initialVal = initial.asDouble();
-        Double finalVal = finalV.asDouble();
-        //Value value = this.visit(ctx.expression());
-        //String typeOfLoop = ctx.
+        
         for(double i=initial.asDouble(); i>=finalV.asDouble();i--)
-        {
+        {   
+            //first update the value of the iterating variable
+            //the iterating variable cannot be manipulated inside the for loop
+            
             memory.replace(id, new Value(i));
             if(breakStatus)
-            break;
-            if(continueStatus)
-            {
-                continueStatus = false;
-                continue;
-            }    
-            
-            //execute statement
-            this.visit(ctx.statement());
-            memory.replace(id, new Value(i));
+                break;
+            //System.out.println(memory.get(id));
 
-            //value = this.visit(ctx.expression());
+            Boolean check4Continue = false;
+            //visit statements one at a time within the compound statement block
+
+            //List<PascalParser.StatementContext> csb = ctx.statement().structuredStatement().compoundStatement().statements().statement().size();
+            PascalParser.StatementsContext ccc = ctx.statement().structuredStatement().compoundStatement().statements();
+            int x = ctx.statement().structuredStatement().compoundStatement().statements().statement().size();
+            int iter = 0;
+            //find out how many statements there are
+            while(iter<x)
+            {
+                this.visit(ccc.statement(iter));
+                if(continueStatus)
+                {
+                    continueStatus = false;
+                    check4Continue = true;
+                    //if we found a continue then lets break out of this while loop
+                    break;
+                }
+                iter++;
+            }
+            
+            if(check4Continue)
+            {
+                check4Continue = false;
+                continue;
+            }
+            //this.visit(ctx.statement());
+            
         }
-        //reset breakStatus
         breakStatus = false;
         return Value.VOID;
     }
@@ -129,6 +147,7 @@ public class TestPascalVisitor {
                 }
                 iter++;
             }
+
             if(check4Continue)
             {
                 check4Continue = false;

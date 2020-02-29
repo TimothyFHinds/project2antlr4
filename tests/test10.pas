@@ -1,32 +1,45 @@
 program test10;
-
 var
    a, b, c: REAL;
-
 procedure display();
 var
-   a, b, c: REAL;
+   x, y, z: REAL;
+
 begin
    (* local variables *)
-   a := 10;
-   b := 20;
-   c := a + b;
+   x := 10;
+   y := 20;
+   z := x + y;
+   
+   (*global variables *)
+   a := 30;
+   b:= 40;
+   c:= a + b;
    
    writeln('Within the procedure display');
+   writeln('Displaying the global variables a, b, and c');
    writeln('value of a = ');
    writeln(a);
    writeln('value of b = ' );
    writeln(b);
    writeln('value of c = ' );
    writeln(c);
-end;
+   
+   writeln('Displaying the local variables x, y, and z');
+   writeln('value of x = ');
+   writeln(x);
+   writeln('value of y = ' );
+   writeln(y);
+   writeln('value of z = ' );
+   writeln(z);
+   end;
 
 begin
    a:= 100;
    b:= 200;
-   c:= a + b;
+   c:= 300;
    
-   writeln('Within the program');
+   writeln('Within the program ');
    writeln('value of a = ');
    writeln(a);
    writeln('value of b = ' );

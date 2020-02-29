@@ -33,5 +33,5 @@ begin
    writeln(b);
    writeln('value of c = ' );
    writeln(c);   
-   display( );
+   display();
 end.

@@ -43,7 +43,7 @@ procedureDeclaration:
     PROCEDURE procName=id (procVariable=formalParameterList)? ';' block
     ;
 formalParameterList: 
-    '(' formalParam (';' formalParam)* ')'
+    '(' formalParam? (';' formalParam)* ')'
     ;
 formalParam:
     parameterGroup
@@ -141,7 +141,7 @@ string:
 
 
 parameterList
-   : actualParameter (',' actualParameter)*
+   : actualParameter? (',' actualParameter)*
    ;
 actualParameter
    : expression parameterwidth*

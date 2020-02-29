@@ -179,4 +179,7 @@ The screen prints out "Already a global variable" because you cannot create a ne
 In our procedure, we then change our global variable A to a different value, 10.0.
 After the procedure, we print out our A in the main block and it returns the new value 10.0.
 
+# tests/test10.pas
 
+Test case #10 is a scoping example.
+It plays around with the scoping test cases comparing global/local/procedure variable scopes.

@@ -1,0 +1,17 @@
+'Within the program'
+'value of a = '
+100.0
+'value of b = '
+200.0
+'value of c = '
+300.0
+ALREADY A GLOBAL VARIABLE!
+ALREADY A GLOBAL VARIABLE!
+ALREADY A GLOBAL VARIABLE!
+'Within the procedure display'
+'value of a = '
+10.0
+'value of b = '
+20.0
+'value of c = '
+30.0

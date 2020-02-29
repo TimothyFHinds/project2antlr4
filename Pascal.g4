@@ -50,6 +50,7 @@ formalParam:
     | VAR parameterGroup
     | FUNCTION parameterGroup
     | PROCEDURE parameterGroup
+    |
     ;
 parameterGroup:
     idList ':' type
@@ -145,6 +146,7 @@ parameterList
    ;
 actualParameter
    : expression parameterwidth*
+   | 
    ;
 parameterwidth
    : ':' expression

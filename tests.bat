@@ -113,6 +113,16 @@ java TestPascalVisitor tests/test9.pas
 
 ECHO. 
 
+:: Test 10
+java TestPascalVisitor tests/test10.pas >> tests/out/result10.txt
+
+ECHO. 
+
+:: Display output of Test10
+java TestPascalVisitor tests/test10.pas
+
+ECHO. 
+
 
 
 
@@ -229,6 +239,17 @@ if errorlevel 1 (
     echo Test9.pas SUCCESSFUL OUTPUT MATCHED!
 )
 del tests\out\result9.txt
+ECHO.
+
+:: Test10
+ECHO.
+fc /b tests\out\test10.out tests\out\result10.txt > nul
+if errorlevel 1 (
+    echo Test10.pas Did not match expected output!
+) else (
+    echo Test10.pas SUCCESSFUL OUTPUT MATCHED!
+)
+del tests\out\result10.txt
 ECHO.
 
 

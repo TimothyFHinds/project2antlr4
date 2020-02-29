@@ -1,7 +1,7 @@
 program test10;
 var
    a, b, c: REAL;
-procedure display;
+procedure display();
 var
    x, y, z: REAL;
 

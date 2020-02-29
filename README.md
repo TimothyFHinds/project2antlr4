@@ -58,7 +58,7 @@ grun Pascal program -gui tests/testX.pas
         see tests/old/test1.pas line 10
         see tests/old/test2.pas line 7/8
 
-    We cannot create variables with the same name. If it is already create, we cannot make a new one of the same name.
+    We cannot create variables with the same name. If it is already create, we cannot make a new one of the same name. We cannot create a new variable named after a global one. This means that if a procedure or variable try to create a new variable named after a global variable, the screen will print out "ALREADY A GLOBAL VARIABLE". This is just printed out to the screen so that we are aware.
 
 
 # Functionalities:    
